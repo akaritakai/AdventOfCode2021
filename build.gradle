@@ -7,8 +7,6 @@ plugins {
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
