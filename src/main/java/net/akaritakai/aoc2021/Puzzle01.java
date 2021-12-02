@@ -12,7 +12,7 @@ public class Puzzle01 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        var depths = getPuzzleInput().lines().mapToInt(Integer::parseInt).toArray();
+        var depths = getPuzzleInput().lines().mapToLong(Long::parseLong).toArray();
         var count = 0;
         for (var i = 1; i < depths.length; i++) {
             if (depths[i] > depths[i - 1]) {
@@ -24,7 +24,7 @@ public class Puzzle01 extends AbstractPuzzle {
 
     @Override
     public String solvePart2() {
-        var depths = getPuzzleInput().lines().mapToInt(Integer::parseInt).toArray();
+        var depths = getPuzzleInput().lines().mapToLong(Long::parseLong).toArray();
         var count = 0;
         var prevSum = depths[0] + depths[1] + depths[2];
         for (var i = 3; i < depths.length; i++) {

@@ -14,12 +14,12 @@ public class Puzzle02 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        var x = 0;
-        var y = 0;
+        var x = 0L;
+        var y = 0L;
         var instructions = getPuzzleInput().lines().collect(Collectors.toList());
         for (var instruction : instructions) {
             var command = instruction.split(" ")[0];
-            var value = Integer.parseInt(instruction.split(" ")[1]);
+            var value = Long.parseLong(instruction.split(" ")[1]);
             switch (command) {
                 case "forward" -> x += value;
                 case "down" -> y += value;
@@ -31,13 +31,13 @@ public class Puzzle02 extends AbstractPuzzle {
 
     @Override
     public String solvePart2() {
-        var x = 0;
-        var y = 0;
-        var aim = 0;
+        var x = 0L;
+        var y = 0L;
+        var aim = 0L;
         var instructions = getPuzzleInput().lines().collect(Collectors.toList());
         for (var instruction : instructions) {
             var command = instruction.split(" ")[0];
-            var value = Integer.parseInt(instruction.split(" ")[1]);
+            var value = Long.parseLong(instruction.split(" ")[1]);
             switch (command) {
                 case "forward" -> {
                     x += value;

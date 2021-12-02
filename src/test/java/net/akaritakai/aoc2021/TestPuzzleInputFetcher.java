@@ -106,7 +106,7 @@ public class TestPuzzleInputFetcher {
         }
 
         // Now that we've loaded the puzzles into memory, they should be cached. So let's change the data on the server
-        // and confirm we didn't request it it.
+        // and confirm we didn't request it.
         var puzzles2 = IntStream.rangeClosed(1, 25)
                 .boxed()
                 .collect(Collectors.toMap(Function.identity(), i -> randomPuzzle()));
