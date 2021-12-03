@@ -18,8 +18,8 @@ public class Puzzle03 extends AbstractPuzzle {
     public String solvePart1() {
         var report = getPuzzleInput().lines().collect(Collectors.toList());
         var length = report.get(0).length();
-        var gamma = 0;
-        var epsilon = 0;
+        var gamma = 0L;
+        var epsilon = 0L;
         for (var i = 0; i < length; i++) {
             if (moreZeros(report, i)) {
                 gamma <<= 1;
@@ -54,8 +54,8 @@ public class Puzzle03 extends AbstractPuzzle {
                 co2Values.removeIf(line -> line.charAt(j) == '1');
             }
         }
-        var oxygenRating = Integer.parseInt(oxygenValues.getFirst(), 2);
-        var co2Rating = Integer.parseInt(co2Values.getFirst(), 2);
+        var oxygenRating = Long.parseLong(oxygenValues.getFirst(), 2);
+        var co2Rating = Long.parseLong(co2Values.getFirst(), 2);
         return String.valueOf(oxygenRating * co2Rating);
     }
 
