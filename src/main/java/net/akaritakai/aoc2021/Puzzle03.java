@@ -54,8 +54,8 @@ public class Puzzle03 extends AbstractPuzzle {
                 co2Values.removeIf(line -> line.charAt(j) == '1');
             }
         }
-        var oxygenRating = Integer.parseInt(oxygenValues.get(0), 2);
-        var co2Rating = Integer.parseInt(co2Values.get(0), 2);
+        var oxygenRating = Integer.parseInt(oxygenValues.getFirst(), 2);
+        var co2Rating = Integer.parseInt(co2Values.getFirst(), 2);
         return String.valueOf(oxygenRating * co2Rating);
     }
 
