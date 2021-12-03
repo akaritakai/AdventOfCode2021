@@ -1,6 +1,7 @@
 package net.akaritakai.aoc2021;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 public class Puzzle03 extends AbstractPuzzle {
@@ -15,86 +16,50 @@ public class Puzzle03 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        var lines = getPuzzleInput().lines().collect(Collectors.toList());
-        var length = lines.get(0).length();
-        var gammaSb = new StringBuilder();
-        var epsilonSb = new StringBuilder();
+        var report = getPuzzleInput().lines().collect(Collectors.toList());
+        var length = report.get(0).length();
+        var gamma = 0;
+        var epsilon = 0;
         for (var i = 0; i < length; i++) {
-            var zeros = 0;
-            var ones = 0;
-            for (var line : lines) {
-                var c = line.charAt(i);
-                if (c == '0') {
-                    zeros++;
-                } else {
-                    ones++;
-                }
-            }
-            if (zeros > ones) {
-                gammaSb.append('0');
-                epsilonSb.append('1');
+            if (moreZeros(report, i)) {
+                gamma <<= 1;
+                epsilon = (epsilon << 1) | 1;
             } else {
-                gammaSb.append('1');
-                epsilonSb.append('0');
+                gamma = (gamma << 1) | 1;
+                epsilon <<= 1;
             }
         }
-        var gamma = Integer.parseInt(gammaSb.toString(), 2);
-        var epsilon = Integer.parseInt(epsilonSb.toString(), 2);
         return String.valueOf(gamma * epsilon);
     }
 
     @Override
     public String solvePart2() {
-        var lines = getPuzzleInput().lines().collect(Collectors.toList());
-        var length = lines.get(0).length();
-        var oxygenLines = new ArrayList<>(lines);
-        for (var i = 0; i < length; i++) {
-            if (oxygenLines.size() == 1) {
-                break;
-            }
-            int zeros = 0;
-            int ones = 0;
-            for (var line : oxygenLines) {
-                var c = line.charAt(i);
-                if (c == '0') {
-                    zeros++;
-                } else {
-                    ones++;
-                }
-            }
-            if (zeros > ones) {
-                int finalI = i;
-                oxygenLines.removeIf(line -> line.charAt(finalI) == '1');
+        var report = getPuzzleInput().lines().collect(Collectors.toList());
+        var length = report.get(0).length();
+        var oxygenValues = new LinkedList<>(report);
+        for (var i = 0; i < length && oxygenValues.size() > 1; i++) {
+            var j = i;
+            if (moreZeros(oxygenValues, i)) {
+                oxygenValues.removeIf(line -> line.charAt(j) == '1');
             } else {
-                int finalI = i;
-                oxygenLines.removeIf(line -> line.charAt(finalI) == '0');
+                oxygenValues.removeIf(line -> line.charAt(j) == '0');
             }
         }
-        var co2Lines = new ArrayList<>(lines);
-        for (var i = 0; i < length; i++) {
-            if (co2Lines.size() == 1) {
-                break;
-            }
-            int zeros = 0;
-            int ones = 0;
-            for (var line : co2Lines) {
-                var c = line.charAt(i);
-                if (c == '0') {
-                    zeros++;
-                } else {
-                    ones++;
-                }
-            }
-            if (zeros > ones) {
-                int finalI = i;
-                co2Lines.removeIf(line -> line.charAt(finalI) == '0');
+        var co2Values = new LinkedList<>(report);
+        for (var i = 0; i < length && co2Values.size() > 1; i++) {
+            var j = i;
+            if (moreZeros(co2Values, i)) {
+                co2Values.removeIf(line -> line.charAt(j) == '0');
             } else {
-                int finalI = i;
-                co2Lines.removeIf(line -> line.charAt(finalI) == '1');
+                co2Values.removeIf(line -> line.charAt(j) == '1');
             }
         }
-        var oxygenRating = Integer.parseInt(oxygenLines.get(0), 2);
-        var co2Rating = Integer.parseInt(co2Lines.get(0), 2);
+        var oxygenRating = Integer.parseInt(oxygenValues.get(0), 2);
+        var co2Rating = Integer.parseInt(co2Values.get(0), 2);
         return String.valueOf(oxygenRating * co2Rating);
+    }
+
+    private boolean moreZeros(Collection<String> report, int position) {
+        return report.stream().filter(value -> value.charAt(position) == '0').count() > (report.size() / 2);
     }
 }
