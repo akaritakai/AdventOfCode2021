@@ -98,6 +98,7 @@ public class Puzzle04 extends AbstractPuzzle {
                 }
                 if (row || col) {
                     won = true;
+                    return;
                 }
             }
         }
