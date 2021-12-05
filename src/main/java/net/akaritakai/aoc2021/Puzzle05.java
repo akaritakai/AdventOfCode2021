@@ -1,6 +1,7 @@
 package net.akaritakai.aoc2021;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -16,25 +17,28 @@ public class Puzzle05 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        var segments = getPuzzleInput().lines()
+        var count = getPuzzleInput().lines()
                 .map(LineSegment::parse)
-                .collect(Collectors.toList());
-        var points = new HashMap<Point, Integer>();
-        segments.stream()
                 .filter(LineSegment::isVerticalOrHorizontal)
-                .forEach(segment -> segment.getPoints().forEach(point -> points.merge(point, 1, Integer::sum)));
-        var count = points.values().stream().filter(n -> n >= 2).count();
+                .flatMap(segment -> segment.getPoints().stream())
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .values()
+                .stream()
+                .filter(n -> n >= 2)
+                .count();
         return String.valueOf(count);
     }
 
     @Override
     public String solvePart2() {
-        var segments = getPuzzleInput().lines()
+        var count = getPuzzleInput().lines()
                 .map(LineSegment::parse)
-                .collect(Collectors.toList());
-        var points = new HashMap<Point, Integer>();
-        segments.forEach(segment -> segment.getPoints().forEach(point -> points.merge(point, 1, Integer::sum)));
-        var count = points.values().stream().filter(n -> n >= 2).count();
+                .flatMap(segment -> segment.getPoints().stream())
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .values()
+                .stream()
+                .filter(n -> n >= 2)
+                .count();
         return String.valueOf(count);
     }
 
