@@ -38,7 +38,7 @@ public class Puzzle05 extends AbstractPuzzle {
         return String.valueOf(count);
     }
 
-    public record LineSegment(Point start, Point end) {
+    public record LineSegment(int x1, int y1, int x2, int y2) {
         private static final Pattern PATTERN = Pattern.compile("(\\d+),(\\d+) -> (\\d+),(\\d+)");
 
         public static LineSegment parse(String s) {
@@ -48,44 +48,25 @@ public class Puzzle05 extends AbstractPuzzle {
                 var y1 = Integer.parseInt(matcher.group(2));
                 var x2 = Integer.parseInt(matcher.group(3));
                 var y2 = Integer.parseInt(matcher.group(4));
-                return new LineSegment(new Point(x1, y1), new Point(x2, y2));
+                return new LineSegment(x1, y1, x2, y2);
             }
             throw new IllegalArgumentException("Not a line segment");
         }
 
         public boolean isVerticalOrHorizontal() {
-            return (start.x == end.x) || (start.y == end.y);
+            return x1 == x2 || y1 == y2;
         }
 
         public Set<Point> getPoints() {
             var points = new HashSet<Point>();
-            if (start.x == end.x) { // Vertical line
-                var min = Math.min(start.y, end.y);
-                var max = Math.max(start.y, end.y);
-                for (var y = min; y <= max; y++) {
-                    points.add(new Point(start.x, y));
-                }
-            } else if (start.y == end.y) { // Horizontal line
-                var min = Math.min(start.x, end.x);
-                var max = Math.max(start.x, end.x);
-                for (var x = min; x <= max; x++) {
-                    points.add(new Point(x, start.y));
-                }
-            } else { // Diagonal line
-                var start = this.start.x < this.end.x ? this.start : this.end;
-                var end = this.start.x < this.end.x ? this.end : this.start;
-                // Invariant: start.x < end.x
-                var x = start.x;
-                var y = start.y;
-                if (start.y < end.y) { // Increasing y values over segment
-                    while (x <= end.x && y <= end.y) {
-                        points.add(new Point(x++, y++));
-                    }
-                } else { // Decreasing y values over segment
-                    while (x <= end.x && y >= end.y) {
-                        points.add(new Point(x++, y--));
-                    }
-                }
+            var dx = Integer.signum(x2 - x1);
+            var dy = Integer.signum(y2 - y1);
+            var x = x1;
+            var y = y1;
+            while (x != x2 + dx || y != y2 + dy) {
+                points.add(new Point(x, y));
+                x += dx;
+                y += dy;
             }
             return points;
         }
