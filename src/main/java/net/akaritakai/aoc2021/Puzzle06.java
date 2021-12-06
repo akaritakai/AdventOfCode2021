@@ -28,12 +28,10 @@ public class Puzzle06 extends AbstractPuzzle {
             var value = Integer.parseInt(token);
             fish[value]++;
         }
+        var zero = 0;
         for (var day = 0; day < days; day++) {
-            var newFish = fish[0];
-            //noinspection SuspiciousSystemArraycopy
-            System.arraycopy(fish, 1, fish, 0, 8);
-            fish[6] += newFish;
-            fish[8] = newFish;
+            fish[(zero + 7) % 9] += fish[zero];
+            zero = (zero + 1) % 9;
         }
         return Arrays.stream(fish).sum();
     }
