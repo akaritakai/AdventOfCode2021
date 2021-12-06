@@ -35,5 +35,4 @@ public class Puzzle06 extends AbstractPuzzle {
         }
         return Arrays.stream(fish).sum();
     }
-
 }
