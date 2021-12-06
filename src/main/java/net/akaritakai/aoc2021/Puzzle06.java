@@ -28,9 +28,8 @@ public class Puzzle06 extends AbstractPuzzle {
             var value = Integer.parseInt(token);
             fish[value]++;
         }
-        var newFish = 0L;
         for (var day = 0; day < days; day++) {
-            newFish = fish[0];
+            var newFish = fish[0];
             //noinspection SuspiciousSystemArraycopy
             System.arraycopy(fish, 1, fish, 0, 8);
             fish[6] += newFish;
