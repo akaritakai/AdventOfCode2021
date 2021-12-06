@@ -24,10 +24,7 @@ public class Puzzle06 extends AbstractPuzzle {
 
     private long simulate(int days) {
         var fish = new long[9];
-        for (var token : getPuzzleInput().trim().split(",")) {
-            var value = Integer.parseInt(token);
-            fish[value]++;
-        }
+        Arrays.stream(getPuzzleInput().trim().split(",")).map(Integer::parseInt).forEach(i -> fish[i]++);
         var base = 0;
         for (var day = 0; day < days; day++) {
             fish[(base + 7) % 9] += fish[base];
