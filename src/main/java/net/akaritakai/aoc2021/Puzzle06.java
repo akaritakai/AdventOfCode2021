@@ -1,9 +1,6 @@
 package net.akaritakai.aoc2021;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Puzzle06 extends AbstractPuzzle {
     public Puzzle06(String puzzleInput) {
