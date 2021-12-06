@@ -89,12 +89,8 @@ public class Puzzle04 extends AbstractPuzzle {
                 boolean row = true;
                 boolean col = true;
                 for (var j = 0; j < 5; j++) {
-                    if (!marks[i][j]) {
-                        row = false;
-                    }
-                    if (!marks[j][i]) {
-                        col = false;
-                    }
+                    row &= marks[i][j];
+                    col &= marks[j][i];
                 }
                 if (row || col) {
                     won = true;
