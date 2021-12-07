@@ -31,7 +31,7 @@ public class TestPuzzle03 extends BasePuzzleTest {
     }
 
     @Test
-    public void testPart1Example2() {
+    public void testPart2Example1() {
         var puzzle = new Puzzle03("""
                 00100
                 11110

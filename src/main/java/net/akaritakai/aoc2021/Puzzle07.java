@@ -4,14 +4,13 @@ import java.util.Arrays;
 
 public class Puzzle07 extends AbstractPuzzle {
     private final int[] crabPositions;
-    private final int minPosition;
-    private final int maxPosition;
 
     public Puzzle07(String puzzleInput) {
         super(puzzleInput);
-        crabPositions = Arrays.stream(getPuzzleInput().trim().split(",")).mapToInt(Integer::parseInt).toArray();
-        minPosition = Arrays.stream(crabPositions).min().orElseThrow();
-        maxPosition = Arrays.stream(crabPositions).max().orElseThrow();
+        crabPositions = Arrays.stream(getPuzzleInput().trim().split(","))
+                .mapToInt(Integer::parseInt)
+                .sorted()
+                .toArray();
     }
 
     @Override
@@ -21,28 +20,29 @@ public class Puzzle07 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        var minCost = Integer.MAX_VALUE;
-        for (var i = minPosition; i <= maxPosition; i++) {
-            var cost = 0;
-            for (var position : crabPositions) {
-                cost += Math.abs(position - i);
-            }
-            minCost = Math.min(cost, minCost);
+        var median = crabPositions[crabPositions.length / 2];
+        var cost = 0;
+        for (var position : crabPositions) {
+            cost += Math.abs(position - median);
         }
-        return String.valueOf(minCost);
+        return String.valueOf(cost);
     }
 
     @Override
     public String solvePart2() {
-        var minCost = Integer.MAX_VALUE;
-        for (var i = minPosition; i <= maxPosition; i++) {
-            var cost = 0;
-            for (var position : crabPositions) {
-                var distance = Math.abs(position - i);
-                cost += distance * (distance + 1) / 2;
-            }
-            minCost = Math.min(cost, minCost);
+        double mean = 0;
+        for (var position : crabPositions) {
+            mean += position;
         }
-        return String.valueOf(minCost);
+        mean /= crabPositions.length;
+        var floorCost = 0;
+        var ceilCost = 0;
+        for (var position : crabPositions) {
+            var floorDistance = Math.abs(position - Math.floor(mean));
+            floorCost += floorDistance * (floorDistance + 1) / 2;
+            var ceilDistance = Math.abs(position - Math.ceil(mean));
+            ceilCost += ceilDistance * (ceilDistance + 1) / 2;
+        }
+        return String.valueOf(Math.min(floorCost, ceilCost));
     }
 }

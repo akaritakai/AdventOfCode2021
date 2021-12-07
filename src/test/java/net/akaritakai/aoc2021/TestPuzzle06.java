@@ -18,7 +18,7 @@ public class TestPuzzle06 extends BasePuzzleTest {
     }
 
     @Test
-    public void testPart1Example2() {
+    public void testPart2Example2() {
         var puzzle = new Puzzle06("3,4,3,1,2");
         assertEquals(puzzle.solvePart2(), "26984457539");
     }

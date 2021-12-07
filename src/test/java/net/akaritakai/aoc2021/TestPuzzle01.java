@@ -29,7 +29,7 @@ public class TestPuzzle01 extends BasePuzzleTest {
     }
 
     @Test
-    public void testPart1Example2() {
+    public void testPart2Example1() {
         var puzzle = new Puzzle01("""
                 199
                 200
