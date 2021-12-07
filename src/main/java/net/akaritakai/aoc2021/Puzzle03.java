@@ -21,7 +21,7 @@ public class Puzzle03 extends AbstractPuzzle {
         var gamma = 0L;
         var epsilon = 0L;
         for (var i = 0; i < length; i++) {
-            if (moreZeros(report, i)) {
+            if (mostCommonValue(report, i) == '0') {
                 gamma <<= 1;
                 epsilon = (epsilon << 1) | 1;
             } else {
@@ -39,27 +39,25 @@ public class Puzzle03 extends AbstractPuzzle {
         var oxygenValues = new LinkedList<>(report);
         for (var i = 0; i < length && oxygenValues.size() > 1; i++) {
             var j = i;
-            if (moreZeros(oxygenValues, i)) {
-                oxygenValues.removeIf(line -> line.charAt(j) == '1');
-            } else {
-                oxygenValues.removeIf(line -> line.charAt(j) == '0');
-            }
+            var leastCommonValue = leastCommonValue(oxygenValues, j);
+            oxygenValues.removeIf(line -> line.charAt(j) == leastCommonValue);
         }
         var co2Values = new LinkedList<>(report);
         for (var i = 0; i < length && co2Values.size() > 1; i++) {
             var j = i;
-            if (moreZeros(co2Values, i)) {
-                co2Values.removeIf(line -> line.charAt(j) == '0');
-            } else {
-                co2Values.removeIf(line -> line.charAt(j) == '1');
-            }
+            var mostCommonValue = mostCommonValue(co2Values, j);
+            co2Values.removeIf(line -> line.charAt(j) == mostCommonValue);
         }
         var oxygenRating = Long.parseLong(oxygenValues.getFirst(), 2);
         var co2Rating = Long.parseLong(co2Values.getFirst(), 2);
         return String.valueOf(oxygenRating * co2Rating);
     }
 
-    private boolean moreZeros(Collection<String> report, int position) {
-        return report.stream().filter(value -> value.charAt(position) == '0').count() > (report.size() / 2);
+    private char mostCommonValue(Collection<String> report, int position) {
+        return report.stream().filter(value -> value.charAt(position) == '0').count() > (report.size() / 2) ? '0' : '1';
+    }
+
+    private char leastCommonValue(Collection<String> report, int position) {
+        return mostCommonValue(report, position) == '0' ? '1' : '0';
     }
 }
