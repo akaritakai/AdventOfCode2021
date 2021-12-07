@@ -1,11 +1,26 @@
 package net.akaritakai.aoc2021;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Puzzle04 extends AbstractPuzzle {
+    private final int[] numbers;
+    private final List<BingoBoard> boards = new ArrayList<>();
+
     public Puzzle04(String puzzleInput) {
         super(puzzleInput);
+        var scanner = new Scanner(getPuzzleInput());
+        numbers = Arrays.stream(scanner.nextLine().split(","))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        while (scanner.hasNext()) {
+            var board = new int[5][5];
+            for (var y = 0; y < 5; y++) {
+                for (var x = 0; x < 5; x++) {
+                    board[y][x] = scanner.nextInt();
+                }
+            }
+            boards.add(new BingoBoard(board));
+        }
     }
 
     @Override
@@ -15,14 +30,7 @@ public class Puzzle04 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        var scanner = new Scanner(getPuzzleInput());
-        var numbers = Arrays.stream(scanner.nextLine().split(","))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-        var boards = new ArrayList<BingoBoard>();
-        while (scanner.hasNext()) {
-            boards.add(new BingoBoard(scanner));
-        }
+        boards.forEach(BingoBoard::reset);
         for (var number : numbers) {
             for (var board : boards) {
                 board.addNumber(number);
@@ -36,14 +44,7 @@ public class Puzzle04 extends AbstractPuzzle {
 
     @Override
     public String solvePart2() {
-        var scanner = new Scanner(getPuzzleInput());
-        var numbers = Arrays.stream(scanner.nextLine().split(","))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-        var boards = new ArrayList<BingoBoard>();
-        while (scanner.hasNext()) {
-            boards.add(new BingoBoard(scanner));
-        }
+        boards.forEach(BingoBoard::reset);
         for (var number : numbers) {
             for (var board : boards) {
                 board.addNumber(number);
@@ -58,19 +59,22 @@ public class Puzzle04 extends AbstractPuzzle {
     private static class BingoBoard {
         private boolean won = false;
         private int lastNumber = -1;
-        private final int[][] board = new int[5][5];
+        private final int[][] board;
         private final boolean[][] marks = new boolean[5][5];
 
-        public BingoBoard(Scanner input) {
-            for (var y = 0; y < 5; y++) {
-                for (var x = 0; x < 5; x++) {
-                    board[y][x] = input.nextInt();
-                }
-            }
+        public BingoBoard(int[][] board) {
+            this.board = board;
         }
 
         public boolean hasWon() {
             return won;
+        }
+
+        public void reset() {
+            won = false;
+            for (var y = 0; y < 5; y++) {
+                Arrays.fill(marks[y], false);
+            }
         }
 
         public void addNumber(int n) {
