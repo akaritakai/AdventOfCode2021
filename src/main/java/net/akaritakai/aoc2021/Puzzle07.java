@@ -21,28 +21,21 @@ public class Puzzle07 extends AbstractPuzzle {
     @Override
     public String solvePart1() {
         var median = crabPositions[crabPositions.length / 2];
-        var cost = 0;
-        for (var position : crabPositions) {
-            cost += Math.abs(position - median);
-        }
+        var cost = Arrays.stream(crabPositions).map(x -> Math.abs(x - median)).sum();
         return String.valueOf(cost);
     }
 
     @Override
     public String solvePart2() {
-        double mean = 0;
-        for (var position : crabPositions) {
-            mean += position;
-        }
-        mean /= crabPositions.length;
-        var floorCost = 0;
-        var ceilCost = 0;
-        for (var position : crabPositions) {
-            var floorDistance = Math.abs(position - Math.floor(mean));
-            floorCost += floorDistance * (floorDistance + 1) / 2;
-            var ceilDistance = Math.abs(position - Math.ceil(mean));
-            ceilCost += ceilDistance * (ceilDistance + 1) / 2;
-        }
+        var mean = Arrays.stream(crabPositions).sum() / (double) crabPositions.length;
+        var floorCost = Arrays.stream(crabPositions)
+                .map(x -> (int) Math.abs(x - Math.floor(mean)))
+                .map(x -> x * (x + 1) / 2)
+                .sum();
+        var ceilCost = Arrays.stream(crabPositions)
+                .map(x -> (int) Math.abs(x - Math.ceil(mean)))
+                .map(x -> x * (x + 1) / 2)
+                .sum();
         return String.valueOf(Math.min(floorCost, ceilCost));
     }
 }
