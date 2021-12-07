@@ -22,9 +22,9 @@ public class Puzzle07 extends AbstractPuzzle {
     @Override
     public String solvePart1() {
         var minCost = Integer.MAX_VALUE;
-        for (int i = minPosition; i <= maxPosition; i++) {
+        for (var i = minPosition; i <= maxPosition; i++) {
             var cost = 0;
-            for (int position : crabPositions) {
+            for (var position : crabPositions) {
                 cost += Math.abs(position - i);
             }
             minCost = Math.min(cost, minCost);
@@ -35,9 +35,9 @@ public class Puzzle07 extends AbstractPuzzle {
     @Override
     public String solvePart2() {
         var minCost = Integer.MAX_VALUE;
-        for (int i = minPosition; i <= maxPosition; i++) {
+        for (var i = minPosition; i <= maxPosition; i++) {
             var cost = 0;
-            for (int position : crabPositions) {
+            for (var position : crabPositions) {
                 var distance = Math.abs(position - i);
                 cost += distance * (distance + 1) / 2;
             }
