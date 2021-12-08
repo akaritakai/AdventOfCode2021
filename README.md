@@ -2,8 +2,8 @@
 
 [![Build Status](https://github.com/akaritakai/AdventOfCode2021/actions/workflows/main.yml/badge.svg)](https://github.com/akaritakai/AdventOfCode2021/actions)
 [![Code Coverage](https://img.shields.io/codecov/c/github/akaritakai/AdventOfCode2021.svg)](https://codecov.io/gh/akaritakai/AdventOfCode2021)
-![Stars](https://img.shields.io/badge/stars%20⭐-14-yellow)
-![Days Completed](https://img.shields.io/badge/days%20completed-7-green)
+![Stars](https://img.shields.io/badge/stars%20⭐-16-yellow)
+![Days Completed](https://img.shields.io/badge/days%20completed-8-green)
 
 This repo contains my Advent of Code 2021 solutions in Java 17.
 
