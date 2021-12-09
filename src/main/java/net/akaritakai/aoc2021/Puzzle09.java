@@ -39,7 +39,7 @@ public class Puzzle09 extends AbstractPuzzle {
         var basinSizes = new PriorityQueue<Integer>(Comparator.reverseOrder());
         var seen = new HashSet<Point>();
         for (var point : findLowPoints()) {
-            var basinSize = 0;
+            var size = 0;
             var queue = new LinkedList<Point>();
             queue.add(point);
             while (!queue.isEmpty()) {
@@ -47,10 +47,10 @@ public class Puzzle09 extends AbstractPuzzle {
                 if (!seen.add(current)) {
                     continue;
                 }
-                basinSize++;
+                size++;
                 queue.addAll(adjacentRising(current));
             }
-            basinSizes.add(basinSize);
+            basinSizes.add(size);
         }
         return String.valueOf(basinSizes.remove() * basinSizes.remove() * basinSizes.remove());
     }
