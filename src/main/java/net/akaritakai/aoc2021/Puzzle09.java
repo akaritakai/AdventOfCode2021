@@ -81,12 +81,8 @@ public class Puzzle09 extends AbstractPuzzle {
         points.add(new Point(point.x, point.y + 1));
         points.add(new Point(point.x - 1, point.y));
         points.add(new Point(point.x + 1, point.y));
-        points.removeIf(p -> !inBounds(p.x, p.y));
+        points.removeIf(p -> p.x < 0 || p.x >= width || p.y < 0 || p.y >= height);
         return points;
-    }
-
-    private boolean inBounds(int x, int y) {
-        return x >= 0 && x < grid[0].length && y >= 0 && y < grid.length;
     }
 
     private record Point(int x, int y) {
