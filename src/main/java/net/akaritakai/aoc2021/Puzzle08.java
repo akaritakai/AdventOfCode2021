@@ -2,6 +2,8 @@ package net.akaritakai.aoc2021;
 
 import java.util.Arrays;
 import java.util.function.Function;
+import java.util.function.IntPredicate;
+import java.util.function.Predicate;
 
 public class Puzzle08 extends AbstractPuzzle {
     public Puzzle08(String puzzleInput) {
@@ -37,55 +39,35 @@ public class Puzzle08 extends AbstractPuzzle {
                 .sum());
     }
 
-    private Function<String, Integer> solver(String[] patterns) {
+    private static Function<String, Integer> solver(String[] patterns) {
         var digits = new String[10];
         // We can deduce '1', '4', '7', and '8' by their length
-        digits[1] = Arrays.stream(patterns).filter(p -> p.length() == 2).findAny().orElseThrow();
-        digits[4] = Arrays.stream(patterns).filter(p -> p.length() == 4).findAny().orElseThrow();
-        digits[7] = Arrays.stream(patterns).filter(p -> p.length() == 3).findAny().orElseThrow();
-        digits[8] = Arrays.stream(patterns).filter(p -> p.length() == 7).findAny().orElseThrow();
+        digits[1] = deduceDigit(patterns, p -> p.length() == 2);
+        digits[4] = deduceDigit(patterns, p -> p.length() == 4);
+        digits[7] = deduceDigit(patterns, p -> p.length() == 3);
+        digits[8] = deduceDigit(patterns, p -> p.length() == 7);
         // We can deduce '6' as it is the only number to have length 6 and share 1 value in common with '1'
-        digits[6] = Arrays.stream(patterns)
-                .filter(p -> p.length() == 6 && p.chars().filter(x -> digits[1].indexOf(x) != -1).count() == 1)
-                .findAny()
-                .orElseThrow();
+        digits[6] = deduceDigit(patterns, p -> p.length() == 6 && p.chars().filter(x -> digits[1].indexOf(x) != -1).count() == 1);
         // We can deduce f as the intersection of '6' and '1'
-        var f = digits[1].chars().filter(x -> digits[6].indexOf(x) != -1).findAny().orElseThrow();
+        var f = deduceSegment(digits[1], x -> digits[6].indexOf(x) != -1);
         // We can deduce c as '1' set minus f
-        var c = digits[1].chars().filter(x -> x != f).findAny().orElseThrow();
+        var c = deduceSegment(digits[1], x -> x != f);
         // We can deduce '3' as it is the only number to have length 5 and contain both c and f
-        digits[3] = Arrays.stream(patterns).filter(p -> p.length() == 5 && p.indexOf(c) != -1 && p.indexOf(f) != -1)
-                .findAny()
-                .orElseThrow();
+        digits[3] = deduceDigit(patterns, p -> p.length() == 5 && p.indexOf(c) != -1 && p.indexOf(f) != -1);
         // We can deduce '2' as it is the only number to have length 5 and share 2 values in common with '4'
-        digits[2] = Arrays.stream(patterns)
-                .filter(p -> p.length() == 5 && p.chars().filter(x -> digits[4].indexOf(x) != -1).count() == 2)
-                .findAny()
-                .orElseThrow();
+        digits[2] = deduceDigit(patterns, p -> p.length() == 5 && p.chars().filter(x -> digits[4].indexOf(x) != -1).count() == 2);
         // We can deduce b as '4' set minus '3'
-        var b = digits[4].chars().filter(x -> digits[3].indexOf(x) == -1).findAny().orElseThrow();
+        var b = deduceSegment(digits[4], x -> digits[3].indexOf(x) == -1);
         // We can deduce '5' as it is the only number to have length 5 and contain b
-        digits[5] = Arrays.stream(patterns).filter(p -> p.length() == 5 && p.indexOf(b) != -1).findAny().orElseThrow();
+        digits[5] = deduceDigit(patterns, p -> p.length() == 5 && p.indexOf(b) != -1);
         // We can deduce d as '4' set minus '1' set minus 'b'
-        var d = digits[4].chars().filter(x -> digits[1].indexOf(x) == -1).filter(x -> x != b)
-                .findAny()
-                .orElseThrow();
+        var d = deduceSegment(digits[4], x -> digits[1].indexOf(x) == -1 && x != b);
         // We can deduce '0' as it is the only number to have length 6 and not contain d
-        digits[0] = Arrays.stream(patterns).filter(p -> p.length() == 6 && p.indexOf(d) == -1).findAny().orElseThrow();
+        digits[0] = deduceDigit(patterns, p -> p.length() == 6 && p.indexOf(d) == -1);
         // We can deduce '9' as it is the only number to have length 6 and contain both c and d
-        digits[9] = Arrays.stream(patterns).filter(p -> p.length() == 6 && p.indexOf(c) != -1 && p.indexOf(d) != -1)
-                .findAny()
-                .orElseThrow();
-        // Sort the digits at the end (normalizing the order)
-        for (var i = 0; i < 10; i++) {
-            var result = digits[i].toCharArray();
-            Arrays.sort(result);
-            digits[i] = new String(result);
-        }
+        digits[9] = deduceDigit(patterns, p -> p.length() == 6 && p.indexOf(c) != -1 && p.indexOf(d) != -1);
         return pattern -> {
-            var array = pattern.toCharArray();
-            Arrays.sort(array);
-            var sorted = new String(array);
+            var sorted = sort(pattern);
             for (var i = 0; i < 10; i++) {
                 if (sorted.equals(digits[i])) {
                     return i;
@@ -93,5 +75,19 @@ public class Puzzle08 extends AbstractPuzzle {
             }
             throw new IllegalArgumentException("No digit found for pattern: " + pattern);
         };
+    }
+
+    private static char deduceSegment(String pattern, IntPredicate predicate) {
+        return (char) pattern.chars().filter(predicate).findAny().orElseThrow();
+    }
+
+    private static String deduceDigit(String[] patterns, Predicate<String> predicate) {
+        return Arrays.stream(patterns).filter(predicate).map(Puzzle08::sort).findAny().orElseThrow();
+    }
+
+    private static String sort(String s) {
+        var tmp = s.toCharArray();
+        Arrays.sort(tmp);
+        return new String(tmp);
     }
 }
