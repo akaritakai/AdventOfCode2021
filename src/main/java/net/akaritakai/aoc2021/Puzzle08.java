@@ -2,7 +2,6 @@ package net.akaritakai.aoc2021;
 
 import java.util.Arrays;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 public class Puzzle08 extends AbstractPuzzle {
     public Puzzle08(String puzzleInput) {
@@ -30,9 +29,8 @@ public class Puzzle08 extends AbstractPuzzle {
                 .parallel()
                 .mapToInt(line -> {
                     var parts = line.split(" \\| ");
-                    var inputs = Arrays.stream(parts[0].split(" ")).toArray(String[]::new);
+                    var patterns = Arrays.stream(parts[0].split(" ")).toArray(String[]::new);
                     var outputs = Arrays.stream(parts[1].split(" ")).toArray(String[]::new);
-                    var patterns = Stream.concat(Arrays.stream(inputs), Arrays.stream(outputs)).toArray(String[]::new);
                     var solver = solver(patterns);
                     return Arrays.stream(outputs).map(solver).reduce(0, (a, b) -> a * 10 + b);
                 })
