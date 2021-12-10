@@ -1,7 +1,7 @@
 package net.akaritakai.aoc2021;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Stack;
 
 public class Puzzle10 extends AbstractPuzzle {
     public Puzzle10(String puzzleInput) {
@@ -17,7 +17,7 @@ public class Puzzle10 extends AbstractPuzzle {
     public String solvePart1() {
         var score = 0;
         for (var line : getPuzzleInput().split("\n")) {
-            var stack = new LinkedList<Character>();
+            var stack = new Stack<Character>();
             for (var c : line.toCharArray()) {
                 if (c == '(' || c == '[' || c == '{' || c == '<') {
                     stack.push(c);
@@ -46,8 +46,8 @@ public class Puzzle10 extends AbstractPuzzle {
     public String solvePart2() {
         var costs = new ArrayList<Long>();
         for (var line : getPuzzleInput().split("\n")) {
-            var stack = new LinkedList<Character>();
             var corrupted = false;
+            var stack = new Stack<Character>();
             for (var c : line.toCharArray()) {
                 if (c == '(' || c == '[' || c == '{' || c == '<') {
                     stack.push(c);
