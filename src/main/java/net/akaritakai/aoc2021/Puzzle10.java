@@ -21,23 +21,21 @@ public class Puzzle10 extends AbstractPuzzle {
             for (var c : line.toCharArray()) {
                 if (c == '(' || c == '[' || c == '{' || c == '<') {
                     stack.push(c);
+                } else if (stack.isEmpty()) {
+                    break;
+                } else if (c == ')' && stack.peek() == '('
+                        || c == ']' && stack.peek() == '['
+                        || c == '}' && stack.peek() == '{'
+                        || c == '>' && stack.peek() == '<') {
+                    stack.pop();
                 } else {
-                    if (stack.isEmpty()) {
-                        break;
-                    } else if (c == ')' && stack.peek() == '('
-                            || c == ']' && stack.peek() == '['
-                            || c == '}' && stack.peek() == '{'
-                            || c == '>' && stack.peek() == '<') {
-                        stack.pop();
-                    } else {
-                        switch (c) {
-                            case ')' -> score += 3;
-                            case ']' -> score += 57;
-                            case '}' -> score += 1197;
-                            case '>' -> score += 25137;
-                        }
-                        break;
+                    switch (c) {
+                        case ')' -> score += 3;
+                        case ']' -> score += 57;
+                        case '}' -> score += 1197;
+                        case '>' -> score += 25137;
                     }
+                    break;
                 }
             }
         }
@@ -53,18 +51,16 @@ public class Puzzle10 extends AbstractPuzzle {
             for (var c : line.toCharArray()) {
                 if (c == '(' || c == '[' || c == '{' || c == '<') {
                     stack.push(c);
+                } else if (stack.isEmpty()) {
+                    break;
+                } else if (c == ')' && stack.peek() == '('
+                        || c == ']' && stack.peek() == '['
+                        || c == '}' && stack.peek() == '{'
+                        || c == '>' && stack.peek() == '<') {
+                    stack.pop();
                 } else {
-                    if (stack.isEmpty()) {
-                        break;
-                    } else if (c == ')' && stack.peek() == '('
-                            || c == ']' && stack.peek() == '['
-                            || c == '}' && stack.peek() == '{'
-                            || c == '>' && stack.peek() == '<') {
-                        stack.pop();
-                    } else {
-                        corrupted = true;
-                        break;
-                    }
+                    corrupted = true;
+                    break;
                 }
             }
             if (!corrupted) {
