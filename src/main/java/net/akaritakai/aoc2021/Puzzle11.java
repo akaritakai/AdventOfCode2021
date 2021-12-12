@@ -93,12 +93,12 @@ public class Puzzle11 extends AbstractPuzzle {
         var grid = new int[height][width];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                grid[y][x] = Integer.parseInt(lines[y].substring(x, x + 1));
+                grid[y][x] = lines[y].charAt(x) - '0';
             }
         }
         return grid;
     }
 
-    private record Point (int x, int y) {
+    private record Point(int x, int y) {
     }
 }
