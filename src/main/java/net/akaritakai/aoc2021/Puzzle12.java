@@ -23,38 +23,34 @@ public class Puzzle12 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        return String.valueOf(countPaths("start", new HashMap<>(), false));
+        return String.valueOf(countPaths("start", new LinkedList<>(), true));
     }
 
     @Override
     public String solvePart2() {
-        return String.valueOf(countPaths("start", new HashMap<>(), true));
+        return String.valueOf(countPaths("start", new LinkedList<>(), false));
     }
 
-    private int countPaths(String cave, Map<String, Integer> visited, boolean part2) {
+    private int countPaths(String cave, LinkedList<String> path, boolean seenTwice) {
         if (cave.equals("end")) {
             return 1;
         }
-        if (!visitAllowed(cave, visited, part2)) {
-            return 0;
+        if (isSmallCave(cave) && path.contains(cave)) {
+            if (seenTwice || cave.equals("start")) {
+                return 0;
+            }
+            seenTwice = true;
         }
-        visited.merge(cave, 1, Integer::sum);
+        path.addLast(cave);
         var count = 0;
-        for (var adjacent : edges.getOrDefault(cave, Set.of())) {
-            count += countPaths(adjacent, visited, part2);
+        for (var next : edges.get(cave)) {
+            count += countPaths(next, path, seenTwice);
         }
-        visited.merge(cave, -1, Integer::sum);
+        path.removeLast();
         return count;
     }
 
-    private boolean visitAllowed(String cave, Map<String, Integer> visited, boolean part2) {
-        return !isSmallCave(cave)
-                || (!cave.equals("start") || visited.getOrDefault(cave, 0) != 1)
-                && (visited.getOrDefault(cave, 0) == 0
-                || part2 && visited.entrySet().stream().noneMatch(e -> isSmallCave(e.getKey()) && e.getValue() > 1));
-    }
-
     private boolean isSmallCave(String cave) {
-        return cave.matches("^[a-z]+$");
+        return cave.charAt(0) >= 'a';
     }
 }
