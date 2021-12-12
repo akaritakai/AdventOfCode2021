@@ -38,8 +38,8 @@ public class Puzzle11 extends AbstractPuzzle {
 
     private int doStep(int[][] grid) {
         var numFlashed = 0;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
                 grid[y][x]++;
             }
         }
@@ -47,8 +47,8 @@ public class Puzzle11 extends AbstractPuzzle {
         boolean anyFlashed;
         do {
             anyFlashed = false;
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
+            for (var y = 0; y < height; y++) {
+                for (var x = 0; x < width; x++) {
                     if (grid[y][x] > 9 && !flashed[y][x]) {
                         flashed[y][x] = true;
                         anyFlashed = true;
@@ -60,8 +60,8 @@ public class Puzzle11 extends AbstractPuzzle {
                 }
             }
         } while (anyFlashed);
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
                 if (flashed[y][x]) {
                     grid[y][x] = 0;
                 }
@@ -72,8 +72,8 @@ public class Puzzle11 extends AbstractPuzzle {
 
     private Collection<Point> adjacent(int x, int y) {
         var adjacent = new ArrayList<Point>(8);
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
+        for (var dx = -1; dx <= 1; dx++) {
+            for (var dy = -1; dy <= 1; dy++) {
                 if ((dx != 0 || dy != 0) && inBounds(x + dx, y + dy)) {
                     adjacent.add(new Point(x + dx, y + dy));
                 }
@@ -91,8 +91,8 @@ public class Puzzle11 extends AbstractPuzzle {
         height = lines.length;
         width = lines[0].length();
         var grid = new int[height][width];
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
                 grid[y][x] = lines[y].charAt(x) - '0';
             }
         }
