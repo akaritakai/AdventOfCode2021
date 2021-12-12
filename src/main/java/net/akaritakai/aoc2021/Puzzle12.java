@@ -50,7 +50,7 @@ public class Puzzle12 extends AbstractPuzzle {
         return count;
     }
 
-    private boolean isSmallCave(String cave) {
+    private static boolean isSmallCave(String cave) {
         return cave.charAt(0) >= 'a';
     }
 }
