@@ -209,6 +209,7 @@ public class LetterOcr {
                 }
                 sb.append('\n');
             }
+            sb.deleteCharAt(sb.length() - 1);
             return sb.toString();
         }
     }
