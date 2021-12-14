@@ -54,12 +54,10 @@ public class Puzzle14 extends AbstractPuzzle {
     private Map<String, Long> doStep(Map<String, Long> counter) {
         var next = new HashMap<String, Long>();
         counter.forEach((pair, value) -> {
-            var left = pair.substring(0, 1);
-            var right = pair.substring(1);
-            if (rules.containsKey(left + right)) {
-                var middle = rules.get(left + right);
-                next.merge(left + middle, value, Long::sum);
-                next.merge(middle + right, value, Long::sum);
+            if (rules.containsKey(pair)) {
+                var middle = rules.get(pair);
+                next.merge(pair.charAt(0) + middle, value, Long::sum);
+                next.merge(middle + pair.charAt(1), value, Long::sum);
             }
         });
         return next;
