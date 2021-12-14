@@ -29,7 +29,7 @@ public class Puzzle14 extends AbstractPuzzle {
         for (var step = 0; step < 10; step++) {
             counter = doStep(counter);
         }
-        return String.valueOf(calculateScore(counter));
+        return String.valueOf(score(counter));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class Puzzle14 extends AbstractPuzzle {
         for (var step = 0; step < 40; step++) {
             counter = doStep(counter);
         }
-        return String.valueOf(calculateScore(counter));
+        return String.valueOf(score(counter));
     }
 
     private Map<String, Long> makeCounter() {
@@ -63,7 +63,7 @@ public class Puzzle14 extends AbstractPuzzle {
         return next;
     }
 
-    private long calculateScore(Map<String, Long> counter) {
+    private long score(Map<String, Long> counter) {
         var map = new long[26];
         for (var entry : counter.entrySet()) {
             map[entry.getKey().charAt(0) - 'A'] += entry.getValue();
