@@ -43,10 +43,8 @@ public class Puzzle14 extends AbstractPuzzle {
 
     private Map<String, Long> makeCounter() {
         var counter = new HashMap<String, Long>();
-        for (var i = 1; i < template.length(); i++) {
-            var left = template.substring(i - 1, i);
-            var right = template.substring(i, i + 1);
-            counter.merge(left + right, 1L, Long::sum);
+        for (var i = 0; i < template.length() - 1; i++) {
+            counter.merge(template.substring(i, i + 2), 1L, Long::sum);
         }
         return counter;
     }
