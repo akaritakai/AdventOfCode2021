@@ -1,29 +1,13 @@
 package net.akaritakai.aoc2021;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.shortestpath.BidirectionalDijkstraShortestPath;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class Puzzle15 extends AbstractPuzzle {
-    private final int height;
-    private final int width;
-    private final int[][] risks;
-
     public Puzzle15(String puzzleInput) {
         super(puzzleInput);
-        var lines = getPuzzleInput().trim().split("\n");
-        height = lines.length;
-        width = lines[0].length();
-        risks = new int[height][width];
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                risks[y][x] = lines[y].charAt(x) - '0';
-            }
-        }
     }
 
     @Override
@@ -33,55 +17,82 @@ public class Puzzle15 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        var graph = buildGraph(false);
-        var start = new Point(0, 0);
-        var end = new Point(width - 1, height - 1);
-        return String.valueOf((int) new BidirectionalDijkstraShortestPath<>(graph).getPath(start, end).getWeight());
+        return String.valueOf(new Graph(getPuzzleInput(), false).findDistance());
     }
 
     @Override
     public String solvePart2() {
-        var graph = buildGraph(true);
-        var start = new Point(0, 0);
-        var end = new Point(5 * width - 1, 5 * height - 1);
-        return String.valueOf((int) new BidirectionalDijkstraShortestPath<>(graph).getPath(start, end).getWeight());
+        return String.valueOf(new Graph(getPuzzleInput(), true).findDistance());
     }
 
-    private Graph<Point, DefaultWeightedEdge> buildGraph(boolean part2) {
-        var graph = new DefaultDirectedWeightedGraph<Point, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-        var maxX = part2 ? width * 5 : width;
-        var maxY = part2 ? height * 5 : height;
-        for (var y = 0; y < maxY; y++) {
-            for (var x = 0; x < maxX; x++) {
-                var point = new Point(x, y);
-                graph.addVertex(point);
-            }
-        }
-        for (var y = 0; y < maxY; y++) {
-            for (var x = 0; x < maxX; x++) {
-                var point = new Point(x, y);
-                var value = (risks[y % height][x % width] + x / width + y / height - 1) % 9 + 1;
-                for (var adjacent : adjacent(point, part2)) {
-                    var edge = graph.addEdge(adjacent, point);
-                    graph.setEdgeWeight(edge, value);
+    private static class Graph {
+        private final int[][] risk;
+        private final int[][] dist;
+        private final int height;
+        private final int width;
+
+        public Graph(String puzzleInput, boolean part2) {
+            var lines = puzzleInput.trim().split("\n");
+            var height = lines.length;
+            var width = lines[0].length();
+            var maxY = part2 ? height * 5 : height;
+            var maxX = part2 ? width * 5 : width;
+            risk = new int[maxY][maxX];
+            dist = new int[maxY][maxX];
+            for (var y = 0; y < height; y++) {
+                for (var x = 0; x < width; x++) {
+                    risk[y][x] = lines[y].charAt(x) - '0';
                 }
             }
+            for (var y = 0; y < maxY; y++) {
+                for (var x = 0; x < maxX; x++) {
+                    if (x == 0 && y == 0) {
+                        dist[0][0] = 0;
+                    } else {
+                        dist[y][x] = 10 * maxX * maxY;
+                    }
+                    risk[y][x] = (risk[y % height][x % width] + x / width + y / height - 1) % 9 + 1;
+                }
+            }
+            this.height = maxY;
+            this.width = maxX;
         }
-        return graph;
-    }
 
-    private Collection<Point> adjacent(Point point, boolean part2) {
-        var points = new ArrayList<Point>(4);
-        points.add(new Point(point.x, point.y - 1));
-        points.add(new Point(point.x, point.y + 1));
-        points.add(new Point(point.x - 1, point.y));
-        points.add(new Point(point.x + 1, point.y));
-        if (part2) {
-            points.removeIf(p -> p.x < 0 || p.x >= width * 5 || p.y < 0 || p.y >= height * 5);
-        } else {
-            points.removeIf(p -> p.x < 0 || p.x >= width || p.y < 0 || p.y >= height);
+        public int findDistance() {
+            var queue = new PriorityQueue<Point>(Comparator.comparingInt(p -> dist[p.y][p.x]));
+            queue.add(new Point(0, 0));
+            while (!queue.isEmpty()) {
+                var point = queue.poll();
+                if (point.x == width - 1 && point.y == height - 1) {
+                    return dist[point.y][point.x];
+                }
+                for (var adjacent : adjacent(point)) {
+                    var newDist = dist[point.y][point.x] + risk[adjacent.y][adjacent.x];
+                    if (newDist < dist[adjacent.y][adjacent.x]) {
+                        dist[adjacent.y][adjacent.x] = newDist;
+                        queue.add(adjacent);
+                    }
+                }
+            }
+            throw new IllegalStateException("No path found");
         }
-        return points;
+
+        private Collection<Point> adjacent(Point point) {
+            var adjacent = new ArrayList<Point>();
+            if (point.x > 0) {
+                adjacent.add(new Point(point.x - 1, point.y));
+            }
+            if (point.y > 0) {
+                adjacent.add(new Point(point.x, point.y - 1));
+            }
+            if (point.x < width - 1) {
+                adjacent.add(new Point(point.x + 1, point.y));
+            }
+            if (point.y < height - 1) {
+                adjacent.add(new Point(point.x, point.y + 1));
+            }
+            return adjacent;
+        }
     }
 
     private record Point(int x, int y) {
