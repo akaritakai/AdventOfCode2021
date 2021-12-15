@@ -76,7 +76,7 @@ public class Puzzle09 extends AbstractPuzzle {
     }
 
     private Collection<Point> adjacent(Point point) {
-        var points = new ArrayList<Point>();
+        var points = new ArrayList<Point>(4);
         points.add(new Point(point.x, point.y - 1));
         points.add(new Point(point.x, point.y + 1));
         points.add(new Point(point.x - 1, point.y));

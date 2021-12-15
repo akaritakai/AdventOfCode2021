@@ -78,7 +78,7 @@ public class Puzzle15 extends AbstractPuzzle {
         }
 
         private Collection<Point> adjacent(Point point) {
-            var adjacent = new ArrayList<Point>();
+            var adjacent = new ArrayList<Point>(4);
             if (point.x > 0) {
                 adjacent.add(new Point(point.x - 1, point.y));
             }
