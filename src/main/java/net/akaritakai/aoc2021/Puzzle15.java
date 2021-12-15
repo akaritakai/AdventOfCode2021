@@ -17,12 +17,12 @@ public class Puzzle15 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        return String.valueOf(new Graph(getPuzzleInput(), false).findDistance());
+        return String.valueOf(new Graph(getPuzzleInput(), false).findMinRisk());
     }
 
     @Override
     public String solvePart2() {
-        return String.valueOf(new Graph(getPuzzleInput(), true).findDistance());
+        return String.valueOf(new Graph(getPuzzleInput(), true).findMinRisk());
     }
 
     private static class Graph {
@@ -58,7 +58,7 @@ public class Puzzle15 extends AbstractPuzzle {
             this.width = maxX;
         }
 
-        public int findDistance() {
+        public int findMinRisk() {
             var queue = new PriorityQueue<Point>(Comparator.comparingInt(p -> dist[p.y][p.x]));
             queue.add(new Point(0, 0));
             while (!queue.isEmpty()) {
