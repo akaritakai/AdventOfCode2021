@@ -1,6 +1,6 @@
 package net.akaritakai.aoc2021;
 
-import org.jheaps.annotations.VisibleForTesting;
+import com.google.common.annotations.VisibleForTesting;
 
 import java.util.LinkedList;
 import java.util.List;
