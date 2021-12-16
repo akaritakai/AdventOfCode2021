@@ -102,15 +102,15 @@ public class Puzzle16 extends AbstractPuzzle {
         }
     }
 
-    private static long readBits(LinkedList<Boolean> input, int n) {
-        var x = 0L;
-        for (var i = 0; i < n; i++) {
-            x <<= 1;
+    private static long readBits(LinkedList<Boolean> input, int size) {
+        var result = 0L;
+        for (var i = 0; i < size; i++) {
+            result <<= 1;
             if (input.removeFirst()) {
-                x |= 1;
+                result |= 1;
             }
         }
-        return x;
+        return result;
     }
 
     @VisibleForTesting
