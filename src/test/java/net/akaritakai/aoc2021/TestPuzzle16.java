@@ -48,7 +48,7 @@ public class TestPuzzle16 extends BasePuzzleTest {
         var packet = Puzzle16.parsePacket(Puzzle16.parseInput(input));
         assertEquals(packet.version(), 1);
         assertEquals(packet.typeId(), 6);
-        assertEquals(packet.lengthTypeId(), 0);
+        assertFalse(packet.lengthTypeId());
         assertEquals(packet.payload(), 27);
         assertEquals(packet.subPackets().size(), 2);
         var packet1 = packet.subPackets().get(0);
@@ -65,7 +65,7 @@ public class TestPuzzle16 extends BasePuzzleTest {
         var packet = Puzzle16.parsePacket(Puzzle16.parseInput(input));
         assertEquals(packet.version(), 7);
         assertEquals(packet.typeId(), 3);
-        assertEquals(packet.lengthTypeId(), 1);
+        assertTrue(packet.lengthTypeId());
         assertEquals(packet.payload(), 3);
         assertEquals(packet.subPackets().size(), 3);
         var packet1 = packet.subPackets().get(0);

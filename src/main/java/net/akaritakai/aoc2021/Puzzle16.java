@@ -65,8 +65,8 @@ public class Puzzle16 extends AbstractPuzzle {
 
     @VisibleForTesting
     static Packet parsePacket(LinkedList<Boolean> input) {
-        var version = readBits(input, 3);
-        var typeId = readBits(input, 3);
+        var version = (short) readBits(input, 3);
+        var typeId = (short) readBits(input, 3);
         if (typeId == 4) {
             var payload = 0L;
             while (true) {
@@ -77,28 +77,27 @@ public class Puzzle16 extends AbstractPuzzle {
                     break;
                 }
             }
-            return new Packet(version, typeId, 0, payload, List.of());
+            return new Packet(version, typeId, false, payload, List.of());
         } else {
-            var lengthTypeId = readBits(input, 1);
-            if (lengthTypeId == 0) {
-                var payload = readBits(input, 15);
+            var lengthTypeId = readBits(input, 1) == 1L;
+            long payload;
+            var subPackets = new LinkedList<Packet>();
+            if (lengthTypeId) {
+                payload = readBits(input, 11);
+                for (var i = 0; i < payload; i++) {
+                    subPackets.add(parsePacket(input));
+                }
+            } else {
+                payload = readBits(input, 15);
                 var payloadBits = new LinkedList<Boolean>();
                 for (var i = 0; i < payload; i++) {
                     payloadBits.add(input.removeFirst());
                 }
-                var subPackets = new LinkedList<Packet>();
                 while (payloadBits.size() > 0) {
                     subPackets.add(parsePacket(payloadBits));
                 }
-                return new Packet(version, typeId, lengthTypeId, payload, subPackets);
-            } else {
-                var payload = readBits(input, 11);
-                var subPackets = new LinkedList<Packet>();
-                for (var i = 0; i < payload; i++) {
-                    subPackets.add(parsePacket(input));
-                }
-                return new Packet(version, typeId, lengthTypeId, payload, subPackets);
             }
+            return new Packet(version, typeId, lengthTypeId, payload, subPackets);
         }
     }
 
@@ -115,9 +114,9 @@ public class Puzzle16 extends AbstractPuzzle {
 
     @VisibleForTesting
     record Packet(
-            long version, // The packet version
-            long typeId, // The packet type
-            long lengthTypeId, // The length type id
+            short version, // The packet version
+            short typeId, // The packet type
+            boolean lengthTypeId, // The length type id
             long payload, // The payload
             List<Packet> subPackets // Any sub-packets contained by this packet
     ) {
