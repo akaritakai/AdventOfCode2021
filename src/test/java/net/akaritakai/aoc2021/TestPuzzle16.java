@@ -86,18 +86,18 @@ public class TestPuzzle16 extends BasePuzzleTest {
         assertEquals(packet.version(), 4);
         assertNotEquals(packet.typeId(), 4);
         assertEquals(packet.subPackets().size(), 1);
-        var packet1 = packet.subPackets().get(0);
-        assertEquals(packet1.version(), 1);
-        assertNotEquals(packet1.typeId(), 4);
-        assertEquals(packet1.subPackets().size(), 1);
-        var packet11 = packet1.subPackets().get(0);
-        assertEquals(packet11.version(), 5);
-        assertNotEquals(packet11.typeId(), 4);
-        assertEquals(packet11.subPackets().size(), 1);
-        var packet111 = packet11.subPackets().get(0);
-        assertEquals(packet111.version(), 6);
-        assertEquals(packet111.typeId(), 4);
-        assertEquals(packet111.subPackets().size(), 0);
+        packet = packet.subPackets().get(0);
+        assertEquals(packet.version(), 1);
+        assertNotEquals(packet.typeId(), 4);
+        assertEquals(packet.subPackets().size(), 1);
+        packet = packet.subPackets().get(0);
+        assertEquals(packet.version(), 5);
+        assertNotEquals(packet.typeId(), 4);
+        assertEquals(packet.subPackets().size(), 1);
+        packet = packet.subPackets().get(0);
+        assertEquals(packet.version(), 6);
+        assertEquals(packet.typeId(), 4);
+        assertEquals(packet.subPackets().size(), 0);
     }
 
     @Test
@@ -143,14 +143,14 @@ public class TestPuzzle16 extends BasePuzzleTest {
         var packet = Puzzle16.parsePacket(Puzzle16.parseInput(input));
         assertNotEquals(packet.typeId(), 4);
         assertEquals(packet.subPackets().size(), 1);
-        var packet1 = packet.subPackets().get(0);
-        assertNotEquals(packet1.typeId(), 4);
-        assertEquals(packet1.subPackets().size(), 1);
-        var packet11 = packet1.subPackets().get(0);
-        assertNotEquals(packet11.typeId(), 4);
-        assertEquals(packet11.subPackets().size(), 5);
-        assertTrue(packet11.subPackets().stream().allMatch(p -> p.typeId() == 4));
-        assertTrue(packet11.subPackets().stream().allMatch(p -> p.subPackets().size() == 0));
+        packet = packet.subPackets().get(0);
+        assertNotEquals(packet.typeId(), 4);
+        assertEquals(packet.subPackets().size(), 1);
+        packet = packet.subPackets().get(0);
+        assertNotEquals(packet.typeId(), 4);
+        assertEquals(packet.subPackets().size(), 5);
+        assertTrue(packet.subPackets().stream().allMatch(p -> p.typeId() == 4));
+        assertTrue(packet.subPackets().stream().allMatch(p -> p.subPackets().size() == 0));
     }
 
     @Test
