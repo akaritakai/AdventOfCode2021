@@ -52,7 +52,7 @@ public class Puzzle17 extends AbstractPuzzle {
     private int findMaxHeight(int dx, int dy) {
         var x = 0;
         var y = 0;
-        var maxHeight = 0;
+        var maxHeight = Integer.MIN_VALUE;
         var hitTarget = false;
         for (var step = 0; step < maxSteps; step++) {
             x += dx;
