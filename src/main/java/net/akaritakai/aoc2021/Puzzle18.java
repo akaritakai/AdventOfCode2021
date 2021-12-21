@@ -118,7 +118,7 @@ public class Puzzle18 extends AbstractPuzzle {
         }
 
         private boolean explode(int depth) {
-            if (left == null && right == null) {
+            if (isLeaf()) {
                 return false;
             } else if (depth >= 4 && isLeafPair()) {
                 var leftAdjacent = leftAdjacent();
