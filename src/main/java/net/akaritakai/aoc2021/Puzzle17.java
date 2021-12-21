@@ -49,6 +49,19 @@ public class Puzzle17 extends AbstractPuzzle {
         return String.valueOf(maxHeight);
     }
 
+    @Override
+    public String solvePart2() {
+        var count = 0;
+        for (var dx = minDx; dx <= maxDx; dx++) {
+            for (var dy = minDy; dy <= maxDy; dy++) {
+                if (isValidVector(dx, dy)) {
+                    count++;
+                }
+            }
+        }
+        return String.valueOf(count);
+    }
+
     private int findMaxHeight(int dx, int dy) {
         var x = 0;
         var y = 0;
@@ -81,18 +94,5 @@ public class Puzzle17 extends AbstractPuzzle {
             }
         }
         return false;
-    }
-
-    @Override
-    public String solvePart2() {
-        var count = 0;
-        for (var dx = minDx; dx <= maxDx; dx++) {
-            for (var dy = minDy; dy <= maxDy; dy++) {
-                if (isValidVector(dx, dy)) {
-                    count++;
-                }
-            }
-        }
-        return String.valueOf(count);
     }
 }

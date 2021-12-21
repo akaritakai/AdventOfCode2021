@@ -48,18 +48,6 @@ public class Puzzle21 extends AbstractPuzzle {
         }
     }
 
-    private static final int[] DIRAC_ROLLS = new int[27];
-    static {
-        int i = 0;
-        for (var j = 1; j <= 3; j++) {
-            for (var k = 1; k <= 3; k++) {
-                for (var l = 1; l <= 3; l++) {
-                    DIRAC_ROLLS[i++] = j + k + l;
-                }
-            }
-        }
-    }
-
     @Override
     public String solvePart2() {
         long[][][][] universes = new long[10][10][22][22];
@@ -96,5 +84,17 @@ public class Puzzle21 extends AbstractPuzzle {
             }
         }
         return String.valueOf(Math.max(wins1, wins2));
+    }
+
+    private static final int[] DIRAC_ROLLS = new int[27];
+    static {
+        int i = 0;
+        for (var j = 1; j <= 3; j++) {
+            for (var k = 1; k <= 3; k++) {
+                for (var l = 1; l <= 3; l++) {
+                    DIRAC_ROLLS[i++] = j + k + l;
+                }
+            }
+        }
     }
 }
