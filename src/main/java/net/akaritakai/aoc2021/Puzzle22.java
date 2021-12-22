@@ -67,15 +67,9 @@ public class Puzzle22 extends AbstractPuzzle {
             var update = new HashMap<Cube, Long>();
             for (var entry : cubes.entrySet()) {
                 var cube2 = entry.getKey();
-                var x1 = Math.max(cube1.minX, cube2.minX);
-                var x2 = Math.min(cube1.maxX, cube2.maxX);
-                var y1 = Math.max(cube1.minY, cube2.minY);
-                var y2 = Math.min(cube1.maxY, cube2.maxY);
-                var z1 = Math.max(cube1.minZ, cube2.minZ);
-                var z2 = Math.min(cube1.maxZ, cube2.maxZ);
-                if (x1 <= x2 && y1 <= y2 && z1 <= z2) {
-                    var cube = new Cube(x1, x2, y1, y2, z1, z2);
-                    update.merge(cube, -entry.getValue(), Long::sum);
+                var cube3 = cube1.intersection(cube2);
+                if (cube3.minX <= cube3.maxX && cube3.minY <= cube3.maxY && cube3.minZ <= cube3.maxZ) {
+                    update.merge(cube3, -entry.getValue(), Long::sum);
                 }
             }
             if (instruction.on()) {
@@ -100,6 +94,10 @@ public class Puzzle22 extends AbstractPuzzle {
     private record Cube(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
         private boolean contains(int x, int y, int z) {
             return x >= minX && x <= maxX && y >= minY && y <= maxY && z >= minZ && z <= maxZ;
+        }
+        private Cube intersection(Cube other) {
+            return new Cube(Math.max(minX, other.minX), Math.min(maxX, other.maxX), Math.max(minY, other.minY),
+                    Math.min(maxY, other.maxY), Math.max(minZ, other.minZ), Math.min(maxZ, other.maxZ));
         }
     }
 }
