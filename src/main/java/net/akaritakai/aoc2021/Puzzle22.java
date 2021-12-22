@@ -17,13 +17,13 @@ public class Puzzle22 extends AbstractPuzzle {
             var matcher = pattern.matcher(line);
             if (matcher.matches()) {
                 var instruction = matcher.group(1).equals("on");
-                var x1 = Integer.parseInt(matcher.group(2));
-                var x2 = Integer.parseInt(matcher.group(3));
-                var y1 = Integer.parseInt(matcher.group(4));
-                var y2 = Integer.parseInt(matcher.group(5));
-                var z1 = Integer.parseInt(matcher.group(6));
-                var z2 = Integer.parseInt(matcher.group(7));
-                instructions[i] = new CubeInstruction(new Cube(x1, x2, y1, y2, z1, z2), instruction);
+                var minX = Integer.parseInt(matcher.group(2));
+                var maxX = Integer.parseInt(matcher.group(3));
+                var minY = Integer.parseInt(matcher.group(4));
+                var maxY = Integer.parseInt(matcher.group(5));
+                var minZ = Integer.parseInt(matcher.group(6));
+                var maxZ = Integer.parseInt(matcher.group(7));
+                instructions[i] = new CubeInstruction(new Cube(minX, maxX, minY, maxY, minZ, maxZ), instruction);
             }
         }
     }
