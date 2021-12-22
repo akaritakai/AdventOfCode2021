@@ -1,6 +1,7 @@
 package net.akaritakai.aoc2021;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class Puzzle22 extends AbstractPuzzle {
@@ -65,27 +66,13 @@ public class Puzzle22 extends AbstractPuzzle {
         for (var instruction : instructions) {
             var cube1 = instruction.cube();
             var update = new HashMap<Cube, Long>();
-            for (var entry : cubes.entrySet()) {
-                var cube2 = entry.getKey();
-                var cube3 = cube1.intersection(cube2);
-                if (cube3.minX <= cube3.maxX && cube3.minY <= cube3.maxY && cube3.minZ <= cube3.maxZ) {
-                    update.merge(cube3, -entry.getValue(), Long::sum);
-                }
-            }
+            cubes.forEach((cube2, value) -> cube1.intersection(cube2).ifPresent(cube -> update.merge(cube, -value, Long::sum)));
             if (instruction.on()) {
                 update.merge(cube1, 1L, Long::sum);
             }
             update.forEach((cube, count) -> cubes.merge(cube, count, Long::sum));
         }
-        var volume = 0L;
-        for (var entry : cubes.entrySet()) {
-            var cube = entry.getKey();
-            long x = cube.maxX - cube.minX + 1;
-            long y = cube.maxY - cube.minY + 1;
-            long z = cube.maxZ - cube.minZ + 1;
-            volume += x * y * z * entry.getValue();
-        }
-        return String.valueOf(volume);
+        return String.valueOf(cubes.entrySet().stream().mapToLong(e -> e.getKey().volume() * e.getValue()).sum());
     }
 
     private record CubeInstruction(Cube cube, boolean on) {
@@ -95,9 +82,23 @@ public class Puzzle22 extends AbstractPuzzle {
         private boolean contains(int x, int y, int z) {
             return x >= minX && x <= maxX && y >= minY && y <= maxY && z >= minZ && z <= maxZ;
         }
-        private Cube intersection(Cube other) {
-            return new Cube(Math.max(minX, other.minX), Math.min(maxX, other.maxX), Math.max(minY, other.minY),
-                    Math.min(maxY, other.maxY), Math.max(minZ, other.minZ), Math.min(maxZ, other.maxZ));
+        private Optional<Cube> intersection(Cube other) {
+            var minX = Math.max(this.minX, other.minX);
+            var maxX = Math.min(this.maxX, other.maxX);
+            var minY = Math.max(this.minY, other.minY);
+            var maxY = Math.min(this.maxY, other.maxY);
+            var minZ = Math.max(this.minZ, other.minZ);
+            var maxZ = Math.min(this.maxZ, other.maxZ);
+            if (minX > maxX || minY > maxY || minZ > maxZ) {
+                return Optional.empty();
+            }
+            return Optional.of(new Cube(minX, maxX, minY, maxY, minZ, maxZ));
+        }
+        private long volume() {
+            long x = maxX - minX + 1;
+            long y = maxY - minY + 1;
+            long z = maxZ - minZ + 1;
+            return x * y * z;
         }
     }
 }
