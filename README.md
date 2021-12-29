@@ -2,10 +2,10 @@
 
 [![Build Status](https://github.com/akaritakai/AdventOfCode2021/actions/workflows/main.yml/badge.svg)](https://github.com/akaritakai/AdventOfCode2021/actions)
 [![Code Coverage](https://img.shields.io/codecov/c/github/akaritakai/AdventOfCode2021.svg)](https://codecov.io/gh/akaritakai/AdventOfCode2021)
-![Stars](https://img.shields.io/badge/stars%20⭐-48-yellow)
-![Days Completed](https://img.shields.io/badge/days%20completed-24-green)
+![Stars](https://img.shields.io/badge/stars%20⭐-50-yellow)
+![Days Completed](https://img.shields.io/badge/days%20completed-25-green)
 
-This repo contains my Advent of Code 2021 solutions in Java 17.
+This repo contains my Advent of Code 2021 solutions in Java 17. It contains solutions for all 25 days of puzzles.
 
 ## Providing Your Puzzle Input
 
