@@ -51,7 +51,7 @@ public class Puzzle23 extends AbstractPuzzle {
                         continue;
                     }
                     if (state.isRoomToHallwayClear(from, to)) {
-                        var energy = state.costFromRoomToHallway(from, to, state.state[from].energy());
+                        var energy = state.costFromRoomToHallway(from, to, state.energy(from));
                         queue.add(new SearchNode(state.next(from, to).encode(), cost + energy));
                     }
                 }
@@ -67,7 +67,7 @@ public class Puzzle23 extends AbstractPuzzle {
                         continue;
                     }
                     if (state.isHallwayToRoomClear(from, to)) {
-                        var energy = state.costFromHallwayToRoom(from, to, state.state[from].energy());
+                        var energy = state.costFromHallwayToRoom(from, to, state.energy(from));
                         queue.add(new SearchNode(state.next(from, to).encode(), cost + energy));
                     }
                 }
@@ -242,6 +242,10 @@ public class Puzzle23 extends AbstractPuzzle {
 
         int costFromHallwayToRoom(int from, int to, int energy) {
             return costFromRoomToHallway(to, from, energy);
+        }
+
+        int energy(int from) {
+            return state[from].energy();
         }
     }
 
