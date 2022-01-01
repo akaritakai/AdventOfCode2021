@@ -1,8 +1,5 @@
 package net.akaritakai.aoc2021;
 
-import com.microsoft.z3.ArithExpr;
-import com.microsoft.z3.Context;
-
 import java.util.Stack;
 
 public class Puzzle24 extends AbstractPuzzle {
@@ -18,48 +15,49 @@ public class Puzzle24 extends AbstractPuzzle {
     @Override
     public String solvePart1() {
         var input = getPuzzleInput().trim().split("\n");
-        var solution = solve(extractEquations(input));
-        return String.valueOf(solution.max);
+        return String.valueOf(solveMax(extractEquations(input)));
     }
 
     @Override
     public String solvePart2() {
         var input = getPuzzleInput().trim().split("\n");
-        var solution = solve(extractEquations(input));
-        return String.valueOf(solution.min);
+        return String.valueOf(solveMin(extractEquations(input)));
     }
 
-    @SuppressWarnings("unchecked")
-    private Pair solve(Equation[] equations) {
-        try (var context = new Context()) {
-            var optimizer = context.mkOptimize();
-            var digits = new ArithExpr[14];
-            for (var i = 0; i < 14; i++) {
-                digits[i] = context.mkIntConst(String.valueOf((char) ('A' + i)));
-                optimizer.Add(context.mkGe(digits[i], context.mkInt(1)));
-                optimizer.Add(context.mkLe(digits[i], context.mkInt(9)));
+    private long solveMax(Equation[] equations) {
+        int[] digits = new int[14];
+        for (var equation : equations) {
+            if (equation.rhs.value < 0) {
+                digits[equation.lhs.index] = (int) (9 + equation.rhs.value);
+                digits[equation.rhs.index] = 9;
+            } else {
+                digits[equation.lhs.index] = 9;
+                digits[equation.rhs.index] = (int) (9 - equation.rhs.value);
             }
-            for (var equation : equations) {
-                var lhs = context.mkAdd(digits[equation.lhs.index], context.mkInt(equation.lhs.value));
-                var rhs = context.mkAdd(digits[equation.rhs.index], context.mkInt(equation.rhs.value));
-                optimizer.Add(context.mkEq(lhs, rhs));
-            }
-            var goal = context.mkIntConst("goal");
-            var parts = new ArithExpr[14];
-            for (var i = 0; i < 14; i++) {
-                parts[i] = context.mkMul(digits[i], context.mkInt((long) Math.pow(10, 13 - i)));
-            }
-            optimizer.Add(context.mkEq(goal, context.mkAdd(parts)));
-            optimizer.Push();
-            optimizer.MkMaximize(goal);
-            optimizer.Check();
-            var max = Long.parseLong(optimizer.getModel().eval(goal, false).toString());
-            optimizer.Pop();
-            optimizer.MkMinimize(goal);
-            optimizer.Check();
-            var min = Long.parseLong(optimizer.getModel().eval(goal, false).toString());
-            return new Pair(min, max);
         }
+        var result = 0L;
+        for (var i = 0; i < 14; i++) {
+            result = result * 10 + digits[i];
+        }
+        return result;
+    }
+
+    private long solveMin(Equation[] equations) {
+        int[] digits = new int[14];
+        for (var equation : equations) {
+            if (equation.rhs.value < 0) {
+                digits[equation.lhs.index] = 1;
+                digits[equation.rhs.index] = (int) (1 - equation.rhs.value);
+            } else {
+                digits[equation.lhs.index] = (int) (1 + equation.rhs.value);
+                digits[equation.rhs.index] = 1;
+            }
+        }
+        var result = 0L;
+        for (var i = 0; i < 14; i++) {
+            result = result * 10 + digits[i];
+        }
+        return result;
     }
 
     private Equation[] extractEquations(String[] input) {
@@ -83,8 +81,5 @@ public class Puzzle24 extends AbstractPuzzle {
     }
 
     private record Expression(int index, long value) {
-    }
-
-    private record Pair(long min, long max) {
     }
 }
