@@ -3,6 +3,15 @@ package net.akaritakai.aoc2021;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * In Day 9, we are given a height map of size m*n and asked to identify the basins in the map (both their low points
+ * and their volume).
+ *
+ * Finding the low points can be done in O(m*n) time by checking that the adjacent cells are higher than the given cell.
+ *
+ * Finding the volume of a basin from a given low point can be done for all the cells in the basin also O(m*n) time via
+ * the flood fill algorithm.
+ */
 public class Puzzle09 extends AbstractPuzzle {
     private final int[][] grid;
     private final int height;
