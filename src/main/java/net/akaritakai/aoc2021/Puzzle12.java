@@ -2,6 +2,12 @@ package net.akaritakai.aoc2021;
 
 import java.util.*;
 
+/**
+ * In Day 12, we are told to count all the possible paths that begin at the given start location and end at the given
+ * end location, with some simple rules regarding visiting the same location more than once.
+ *
+ * The problem is amenable to simple recursion to count the paths.
+ */
 public class Puzzle12 extends AbstractPuzzle {
     private final Map<String, Set<String>> edges = new HashMap<>();
 
