@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * In Day 16, we are asked to make a protocol decoder.
+ */
 public class Puzzle16 extends AbstractPuzzle {
     public Puzzle16(String puzzleInput) {
         super(puzzleInput);
