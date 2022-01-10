@@ -17,8 +17,14 @@ import java.util.Arrays;
  *   searching through and remove either all the strings before it or all the strings after it.
  */
 public class Puzzle03 extends AbstractPuzzle {
+    private final String[] report;
+    private final int length;
+    private boolean sorted;
+
     public Puzzle03(String puzzleInput) {
         super(puzzleInput);
+        report = getPuzzleInput().lines().toArray(String[]::new);
+        length = report[0].length();
     }
 
     @Override
@@ -28,8 +34,6 @@ public class Puzzle03 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        var report = getPuzzleInput().lines().toArray(String[]::new);
-        var length = report[0].length();
         var gamma = 0L;
         var epsilon = 0L;
         for (var i = 0; i < length; i++) {
@@ -55,9 +59,10 @@ public class Puzzle03 extends AbstractPuzzle {
 
     @Override
     public String solvePart2() {
-        var report = getPuzzleInput().lines().toArray(String[]::new);
-        var length = report[0].length();
-        Arrays.sort(report); // Can be replaced with a radix sort if k < log n
+        if (!sorted) {
+            Arrays.sort(report); // Can be replaced with a radix sort if k < log n
+            sorted = true;
+        }
         var low = 0;
         var high = report.length;
         for (var i = 0; i < length && high - low > 1; i++) {
@@ -83,16 +88,23 @@ public class Puzzle03 extends AbstractPuzzle {
         return String.valueOf(oxygenRating * co2Rating);
     }
 
+    /**
+     * Perform a binary search on the sorted report between low inclusive and high exclusive to find the first binary
+     * string that has 1s bit in the given position we're searching through. If no such string exists, return high.
+     *
+     * @param report the sorted report of binary strings
+     * @param position the position of the bit to examine in each string
+     * @param low the inclusive lower bound of the search
+     * @param high the exclusive upper bound of the search
+     * @return the index of the first string that has a 1 in the given position, or high if no such string exists
+     */
     private static int findMid(String[] report, int position, int low, int high) {
-        // Perform a binary search on the sorted report between low inclusive and high exclusive to find the first
-        // binary string that has 1s bit in the given position we're searching through. If no such string exists, return
-        // high.
         while (low < high) {
             var mid = low + (high - low) / 2;
             if (report[mid].charAt(position) == '1') {
-                high = mid; // The value to return is at least mid.
+                high = mid;
             } else {
-                low = mid + 1; // The value to return is at least mid + 1.
+                low = mid + 1;
             }
         }
         return low;

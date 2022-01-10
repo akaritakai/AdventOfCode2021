@@ -5,8 +5,11 @@ package net.akaritakai.aoc2021;
  * them in order. This is done in O(n).
  */
 public class Puzzle02 extends AbstractPuzzle {
+    private final Instruction[] instructions;
+
     public Puzzle02(String puzzleInput) {
         super(puzzleInput);
+        instructions = getPuzzleInput().lines().map(Instruction::parse).toArray(Instruction[]::new);
     }
 
     @Override
@@ -18,15 +21,11 @@ public class Puzzle02 extends AbstractPuzzle {
     public String solvePart1() {
         var x = 0L;
         var y = 0L;
-        var instructions = getPuzzleInput().lines().toArray(String[]::new);
         for (var instruction : instructions) {
-            var tokens = instruction.split(" ");
-            var command = tokens[0];
-            var value = Long.parseLong(tokens[1]);
-            switch (command) {
-                case "forward" -> x += value;
-                case "down" -> y += value;
-                case "up" -> y -= value;
+            switch (instruction.command) {
+                case "forward" -> x += instruction.value;
+                case "down" -> y += instruction.value;
+                case "up" -> y -= instruction.value;
             }
         }
         return String.valueOf(x * y);
@@ -37,20 +36,25 @@ public class Puzzle02 extends AbstractPuzzle {
         var x = 0L;
         var y = 0L;
         var aim = 0L;
-        var instructions = getPuzzleInput().lines().toArray(String[]::new);
         for (var instruction : instructions) {
-            var tokens = instruction.split(" ");
-            var command = tokens[0];
-            var value = Long.parseLong(tokens[1]);
-            switch (command) {
+            switch (instruction.command) {
                 case "forward" -> {
-                    x += value;
-                    y += aim * value;
+                    x += instruction.value;
+                    y += aim * instruction.value;
                 }
-                case "down" -> aim += value;
-                case "up" -> aim -= value;
+                case "down" -> aim += instruction.value;
+                case "up" -> aim -= instruction.value;
             }
         }
         return String.valueOf(x * y);
+    }
+
+    private record Instruction(String command, long value) {
+        public static Instruction parse(String instruction) {
+            var tokens = instruction.split(" ");
+            var command = tokens[0];
+            var value = Long.parseLong(tokens[1]);
+            return new Instruction(command, value);
+        }
     }
 }

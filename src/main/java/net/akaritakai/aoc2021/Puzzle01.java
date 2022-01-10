@@ -5,8 +5,11 @@ package net.akaritakai.aoc2021;
  * between samples. This is done in O(n).
  */
 public class Puzzle01 extends AbstractPuzzle {
+    private final long[] depths;
+
     public Puzzle01(String puzzleInput) {
         super(puzzleInput);
+        depths = getPuzzleInput().lines().mapToLong(Long::parseLong).toArray();
     }
 
     @Override
@@ -25,7 +28,6 @@ public class Puzzle01 extends AbstractPuzzle {
     }
 
     private int countIncreases(int windowSize) {
-        var depths = getPuzzleInput().lines().mapToLong(Long::parseLong).toArray();
         var count = 0;
         var prevSum = 0L;
         for (var i = 0; i < windowSize; i++) {

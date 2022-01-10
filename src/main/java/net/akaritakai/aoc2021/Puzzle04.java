@@ -2,9 +2,16 @@ package net.akaritakai.aoc2021;
 
 import java.util.*;
 
+/**
+ * In Day 4, we are playing bingo with a given set of n numbers as draw numbers and k 5x5 boards.
+ *
+ * The naive solution solves the problem in O(n*k) time, and given the small values of n and k, there is little need to
+ * optimize.
+ */
 public class Puzzle04 extends AbstractPuzzle {
     private final int[] numbers;
     private final List<BingoBoard> boards = new ArrayList<>();
+    private boolean dirty;
 
     public Puzzle04(String puzzleInput) {
         super(puzzleInput);
@@ -30,7 +37,10 @@ public class Puzzle04 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        boards.forEach(BingoBoard::reset);
+        if (dirty) {
+            boards.forEach(BingoBoard::reset);
+        }
+        dirty = true;
         for (var number : numbers) {
             for (var board : boards) {
                 board.addNumber(number);
@@ -44,7 +54,10 @@ public class Puzzle04 extends AbstractPuzzle {
 
     @Override
     public String solvePart2() {
-        boards.forEach(BingoBoard::reset);
+        if (dirty) {
+            boards.forEach(BingoBoard::reset);
+        }
+        dirty = true;
         for (var number : numbers) {
             for (var board : boards) {
                 board.addNumber(number);
