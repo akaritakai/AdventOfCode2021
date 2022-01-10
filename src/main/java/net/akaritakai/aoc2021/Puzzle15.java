@@ -5,6 +5,12 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+/**
+ * In Day 15, we are given a weighted, directed graph of n vertices and told to find the shortest path from a given
+ * start and end vertex.
+ *
+ * Using Dijkstra's algorithm, we can find the shortest path in O(n log n) time.
+ */
 public class Puzzle15 extends AbstractPuzzle {
     public Puzzle15(String puzzleInput) {
         super(puzzleInput);
