@@ -3,6 +3,13 @@ package net.akaritakai.aoc2021;
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * In Day 10, we are given a context-free grammar for a simple language of various kinds of balanced brackets and told
+ * to identify the earliest location in which the parse is invalid or incomplete (and if incomplete, how to complete
+ * it).
+ *
+ * This is achieved with a simple stack-based algorithm.
+ */
 public class Puzzle10 extends AbstractPuzzle {
     public Puzzle10(String puzzleInput) {
         super(puzzleInput);
