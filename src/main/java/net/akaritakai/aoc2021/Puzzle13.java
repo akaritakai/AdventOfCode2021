@@ -8,6 +8,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * In Day 13, we are given a list of 2D points and a series of folds to make along the X and Y axes. After making the
+ * folds, we are left with a 2D image of letters that we then OCR.
+ *
+ * The rendered font in question is the same one that has been used in previous years of Advent of Code, and thus we can
+ * read the letters simply by using the pixel lookup table in the {@link LetterOcr} class.
+ */
 public class Puzzle13 extends AbstractPuzzle {
     private final Set<Point> points;
     private final List<String[]> instructions;
@@ -72,7 +79,7 @@ public class Puzzle13 extends AbstractPuzzle {
     }
 
     private boolean[][] toImage(Stream<Point> points) {
-        var collection = points.collect(Collectors.toList());
+        var collection = points.toList();
         var minX = collection.stream().mapToInt(Point::x).min().orElseThrow();
         var minY = collection.stream().mapToInt(Point::y).min().orElseThrow();
         var maxX = collection.stream().mapToInt(Point::x).max().orElseThrow();
