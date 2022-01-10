@@ -5,6 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * In Day 14, we are given another counting problem. We are given a string and set of expansion rules. We are to apply
+ * the rules a given number of times to our starting string, and find the frequency of the most common symbol in the
+ * resulting string.
+ *
+ * The string grows so quickly that attempting to hold it in memory and performing string operations on it is
+ * infeasible. Instead, we can count the frequency of 2-symbol sequences in the string, and after careful accounting,
+ * return the size of the resultant string.
+ */
 public class Puzzle14 extends AbstractPuzzle {
     private final String template;
     private final Map<String, String> rules;
