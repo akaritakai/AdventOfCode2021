@@ -5,6 +5,11 @@ import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
+/**
+ * In Day 8, we are shown all 10 numbers on a seven-segment display and asked to find out how it has been mis-wired.
+ * Being shown all 10 numbers is always enough information to deduce the correct wiring, and we do so in a deterministic
+ * manner.
+ */
 public class Puzzle08 extends AbstractPuzzle {
     public Puzzle08(String puzzleInput) {
         super(puzzleInput);
