@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.IntStream;
 
+/**
+ * In Day 11, we are given a simple cellular automaton (made of octopuses with varying energy levels) and told to
+ * simulate it for a given time until the octopuses all are in a flashing energy state.
+ */
 public class Puzzle11 extends AbstractPuzzle {
     private int height;
     private int width;
