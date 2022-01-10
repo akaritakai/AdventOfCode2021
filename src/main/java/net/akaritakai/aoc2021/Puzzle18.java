@@ -5,6 +5,12 @@ import com.google.common.annotations.VisibleForTesting;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
+/**
+ * In Day 18, we are given some snailfish numbers (recursive ASTs) and told to perform a number of operations on them.
+ *
+ * The input is parsed into an AST using a modified version of the Shunting-yard algorithm; after which, the operations
+ * themselves become relatively straightforward.
+ */
 public class Puzzle18 extends AbstractPuzzle {
     private static final Pattern PATTERN = Pattern.compile("(\\[|]|,|\\d+)");
 
