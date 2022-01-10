@@ -6,14 +6,12 @@ import java.util.regex.Pattern;
  * In Day 17, we are given a trajectory problem. We are given an initial position and a target range to hit and told to
  * find the number of discrete velocities that will hit the range on a discrete time step.
  *
- * This problem involves identifying the minimum and maximum velocity values in both axes and checking if they are
- * satisfiable or not.
+ * This problem involves identifying all relevant initial velocities and checking if they are satisfiable or not. Given
+ * the tight bounds of the problem, this was solved by brute force (on my machine in ~50 ms).
  *
- * There are some easy closed-form shortcuts for this that don't involve making some assumptions about the given target
- * range. If the x-axis's target range contains a triangle number, then there is a closed form solution of
- * y1 * (y1 + 1) / 2 that can be taken advantage of.
- *
- * There are a plethora of speed-ups that can be made to this particular solution.
+ * There are some easy closed-form shortcuts for this, but some of them make assumptions about the given target range.
+ * For example, if the x-axis's target range contains a triangle number, then there is a closed form solution of
+ * y1 * (y1 + 1) / 2 for part 1.
  */
 public class Puzzle17 extends AbstractPuzzle {
     private final int x1;
