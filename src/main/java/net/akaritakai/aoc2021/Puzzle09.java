@@ -1,7 +1,6 @@
 package net.akaritakai.aoc2021;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * In Day 9, we are given a height map of size m*n and asked to identify the basins in the map (both their low points
@@ -37,15 +36,17 @@ public class Puzzle09 extends AbstractPuzzle {
 
     @Override
     public String solvePart1() {
-        return String.valueOf(findLowPoints()
-                .stream()
-                .mapToInt(point -> grid[point.y][point.x] + 1)
-                .sum());
+        var lowPoints = findLowPoints();
+        var sum = 0;
+        for (var point : lowPoints) {
+            sum += grid[point.y][point.x] + 1;
+        }
+        return String.valueOf(sum);
     }
 
     @Override
     public String solvePart2() {
-        var basinSizes = new PriorityQueue<Integer>(Comparator.reverseOrder());
+        var basins = new int[3]; // Top 3 basin sizes
         var seen = new HashSet<Point>();
         for (var point : findLowPoints()) {
             var size = 0;
@@ -59,18 +60,33 @@ public class Puzzle09 extends AbstractPuzzle {
                 size++;
                 queue.addAll(adjacentRising(current));
             }
-            basinSizes.add(size);
+            if (size > basins[0]) {
+                basins[0] = size;
+                // 3-element sort
+                if (basins[0] > basins[1]) {
+                    swap(basins, 0, 1);
+                }
+                if (basins[1] > basins[2]) {
+                    swap(basins, 1, 2);
+                }
+                if (basins[0] > basins[1]) {
+                    swap(basins, 0, 1);
+                }
+            }
         }
-        return String.valueOf(basinSizes.remove() * basinSizes.remove() * basinSizes.remove());
+        return String.valueOf(basins[0] * basins[1] * basins[2]);
     }
 
     private Collection<Point> findLowPoints() {
         var points = new ArrayList<Point>();
         for (var y = 0; y < height; y++) {
             for (var x = 0; x < width; x++) {
-                var point = new Point(x, y);
-                if (adjacent(point).stream().mapToInt(p -> grid[p.y][p.x]).allMatch(p -> p > grid[point.y][point.x])) {
-                    points.add(point);
+                var isLowPoint = y == 0 || grid[y - 1][x] > grid[y][x]; // Up
+                isLowPoint &= y == height - 1 || grid[y + 1][x] > grid[y][x]; // Down
+                isLowPoint &= x == 0 || grid[y][x - 1] > grid[y][x]; // Left
+                isLowPoint &= x == width - 1 || grid[y][x + 1] > grid[y][x]; // Right
+                if (isLowPoint) {
+                    points.add(new Point(x, y));
                 }
             }
         }
@@ -78,22 +94,34 @@ public class Puzzle09 extends AbstractPuzzle {
     }
 
     private Collection<Point> adjacentRising(Point point) {
-        return adjacent(point).stream()
-                .filter(p -> grid[p.y][p.x] > grid[point.y][point.x])
-                .filter(p -> grid[p.y][p.x] != 9)
-                .collect(Collectors.toList());
-    }
-
-    private Collection<Point> adjacent(Point point) {
         var points = new ArrayList<Point>(4);
-        points.add(new Point(point.x, point.y - 1));
-        points.add(new Point(point.x, point.y + 1));
-        points.add(new Point(point.x - 1, point.y));
-        points.add(new Point(point.x + 1, point.y));
-        points.removeIf(p -> p.x < 0 || p.x >= width || p.y < 0 || p.y >= height);
+        var x = point.x;
+        var y = point.y;
+        // Up
+        if (y > 0 && grid[y - 1][x] > grid[y][x] && grid[y - 1][x] != 9) {
+            points.add(new Point(x, y - 1));
+        }
+        // Down
+        if (y < height - 1 && grid[y + 1][x] > grid[y][x] && grid[y + 1][x] != 9) {
+            points.add(new Point(x, y + 1));
+        }
+        // Left
+        if (x > 0 && grid[y][x - 1] > grid[y][x] && grid[y][x - 1] != 9) {
+            points.add(new Point(x - 1, y));
+        }
+        // Right
+        if (x < width - 1 && grid[y][x + 1] > grid[y][x] && grid[y][x + 1] != 9) {
+            points.add(new Point(x + 1, y));
+        }
         return points;
     }
 
     private record Point(int x, int y) {
+    }
+
+    private static void swap(int[] array, int i, int j) {
+        var tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
     }
 }
