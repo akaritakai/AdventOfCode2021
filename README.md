@@ -5,7 +5,70 @@
 ![Stars](https://img.shields.io/badge/stars%20⭐-50-yellow)
 ![Days Completed](https://img.shields.io/badge/days%20completed-25-green)
 
-This repo contains my Advent of Code 2021 solutions in Java 17. It contains solutions for all 25 days of puzzles.
+This repo contains my Advent of Code 2021 solutions in Java 17. After providing it with your puzzle inputs (or your
+session token), running the program will print out the answers to all days of the puzzle. A Docker image is provided to 
+ensure compatibility with machines that do not want to install the Java 17 runtime.
+
+The goal of this repo is to provide fast, highly tested, and easy-to-use solutions. When run on my PC (an
+AMD Ryzen 9 3950X), all answers are outputed in ~2.6 seconds. OCR is also automatically performed for Day 13's puzzle to
+avoid requiring interpretation.
+
+This repo may see changes in the future to improve runtime. If you have any suggestions, issues running the code, or
+find a correctness error: please open an issue or pull request.
+
+### Example output:
+```
+Day 01 Part 1: 1532
+Day 01 Part 2: 1571
+Day 02 Part 1: 1604850
+Day 02 Part 2: 1685186100
+Day 03 Part 1: 3885894
+Day 03 Part 2: 4375225
+Day 04 Part 1: 87456
+Day 04 Part 2: 15561
+Day 05 Part 1: 6113
+Day 05 Part 2: 20373
+Day 06 Part 1: 349549
+Day 06 Part 2: 1589590444365
+Day 07 Part 1: 356922
+Day 07 Part 2: 100347031
+Day 08 Part 1: 318
+Day 08 Part 2: 996280
+Day 09 Part 1: 550
+Day 09 Part 2: 1100682
+Day 10 Part 1: 271245
+Day 10 Part 2: 1685293086
+Day 11 Part 1: 1634
+Day 11 Part 2: 210
+Day 12 Part 1: 4338
+Day 12 Part 2: 114189
+Day 13 Part 1: 655
+Day 13 Part 2: JPZCUAUR
+Day 14 Part 1: 3247
+Day 14 Part 2: 4110568157153
+Day 15 Part 1: 458
+Day 15 Part 2: 2800
+Day 16 Part 1: 883
+Day 16 Part 2: 1675198555015
+Day 17 Part 1: 7626
+Day 17 Part 2: 2032
+Day 18 Part 1: 4323
+Day 18 Part 2: 4749
+Day 19 Part 1: 308
+Day 19 Part 2: 12124
+Day 20 Part 1: 5597
+Day 20 Part 2: 18723
+Day 21 Part 1: 504972
+Day 21 Part 2: 446968027750017
+Day 22 Part 1: 615700
+Day 22 Part 2: 1236463892941356
+Day 23 Part 1: 18282
+Day 23 Part 2: 50132
+Day 24 Part 1: 91398299697996
+Day 24 Part 2: 41171183141291
+Day 25 Part 1: 300
+Day 25 Part 2: Day 25 has no part 2
+```
 
 ## Providing Your Puzzle Input
 
