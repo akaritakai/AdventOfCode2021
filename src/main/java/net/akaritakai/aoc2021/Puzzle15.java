@@ -1,7 +1,5 @@
 package net.akaritakai.aoc2021;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -64,43 +62,59 @@ public class Puzzle15 extends AbstractPuzzle {
             this.width = maxX;
         }
 
+        private int count;
+
         public int findMinRisk() {
-            var queue = new PriorityQueue<Point>(Comparator.comparingInt(p -> dist[p.y][p.x]));
-            queue.add(new Point(0, 0));
-            while (!queue.isEmpty()) {
-                var point = queue.poll();
-                if (point.x == width - 1 && point.y == height - 1) {
-                    return dist[point.y][point.x];
+            var comparator = new Comparator<int[]>() {
+                @Override
+                public int compare(int[] lhs, int[] rhs) {
+                    return lhs[2] - rhs[2];
                 }
-                for (var adjacent : adjacent(point)) {
-                    var newDist = dist[point.y][point.x] + risk[adjacent.y][adjacent.x];
-                    if (newDist < dist[adjacent.y][adjacent.x]) {
-                        dist[adjacent.y][adjacent.x] = newDist;
-                        queue.add(adjacent);
+            };
+            var queue = new PriorityQueue<>(comparator);
+            queue.add(new int[]{0, 0, dist[0][0] + width - 1 + height - 1});
+            while (!queue.isEmpty()) {
+                count++;
+                var data = queue.poll();
+                var x = data[0];
+                var y = data[1];
+                if (x == width - 1 && y == height - 1) {
+                    return dist[y][x];
+                }
+                if (x > 0) {
+                    var dx = x - 1;
+                    var newDist = dist[y][x] + risk[y][dx];
+                    if (newDist < dist[y][dx]) {
+                        dist[y][dx] = newDist;
+                        queue.add(new int[]{dx, y, newDist + Math.abs(dx - width + 1) + Math.abs(y - height + 1)});
+                    }
+                }
+                if (y > 0) {
+                    var dy = y - 1;
+                    var newDist = dist[y][x] + risk[dy][x];
+                    if (newDist < dist[dy][x]) {
+                        dist[dy][x] = newDist;
+                        queue.add(new int[]{x, dy, newDist + Math.abs(x - width + 1) + Math.abs(dy - height + 1)});
+                    }
+                }
+                if (x < width - 1) {
+                    var dx = x + 1;
+                    var newDist = dist[y][x] + risk[y][dx];
+                    if (newDist < dist[y][dx]) {
+                        dist[y][dx] = newDist;
+                        queue.add(new int[]{dx, y, newDist + Math.abs(dx - width + 1) + Math.abs(y - height + 1)});
+                    }
+                }
+                if (y < height - 1) {
+                    var dy = y + 1;
+                    var newDist = dist[y][x] + risk[dy][x];
+                    if (newDist < dist[dy][x]) {
+                        dist[dy][x] = newDist;
+                        queue.add(new int[]{x, dy, newDist + Math.abs(x - width + 1) + Math.abs(dy - height + 1)});
                     }
                 }
             }
             throw new IllegalStateException("No path found");
         }
-
-        private Collection<Point> adjacent(Point point) {
-            var adjacent = new ArrayList<Point>(4);
-            if (point.x > 0) {
-                adjacent.add(new Point(point.x - 1, point.y));
-            }
-            if (point.y > 0) {
-                adjacent.add(new Point(point.x, point.y - 1));
-            }
-            if (point.x < width - 1) {
-                adjacent.add(new Point(point.x + 1, point.y));
-            }
-            if (point.y < height - 1) {
-                adjacent.add(new Point(point.x, point.y + 1));
-            }
-            return adjacent;
-        }
-    }
-
-    private record Point(int x, int y) {
     }
 }
