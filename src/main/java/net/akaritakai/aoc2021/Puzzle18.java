@@ -31,12 +31,12 @@ public class Puzzle18 extends AbstractPuzzle {
 
     @Override
     public String solvePart2() {
-        var nodeStrings = getPuzzleInput().trim().lines().toArray(String[]::new);
+        var nodes = getPuzzleInput().trim().lines().map(Puzzle18::parse).toArray(Node[]::new);
         var maxSum = 0;
-        for (var i = 0; i < nodeStrings.length; i++) {
-            for (var j = i + 1; j < nodeStrings.length; j++) {
-                maxSum = Math.max(maxSum, sum(parse(nodeStrings[i]), parse(nodeStrings[j])).magnitude());
-                maxSum = Math.max(maxSum, sum(parse(nodeStrings[j]), parse(nodeStrings[i])).magnitude());
+        for (var i = 0; i < nodes.length; i++) {
+            for (var j = i + 1; j < nodes.length; j++) {
+                maxSum = Math.max(maxSum, sum(nodes[i].deepCopy(), nodes[j].deepCopy()).magnitude());
+                maxSum = Math.max(maxSum, sum(nodes[j].deepCopy(), nodes[i].deepCopy()).magnitude());
             }
         }
         return String.valueOf(maxSum);
@@ -100,6 +100,19 @@ public class Puzzle18 extends AbstractPuzzle {
         private Node(Node parent, int value) {
             this.parent = parent;
             this.value = value;
+        }
+
+        private Node deepCopy() {
+            var node = new Node(this.value);
+            if (left != null) {
+                node.left = left.deepCopy();
+                node.left.parent = node;
+            }
+            if (right != null) {
+                node.right = right.deepCopy();
+                node.right.parent = node;
+            }
+            return node;
         }
 
         @VisibleForTesting
