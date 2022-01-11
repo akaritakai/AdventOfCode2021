@@ -29,11 +29,10 @@ public class Puzzle05 extends AbstractPuzzle {
                 var y2 = Integer.parseInt(matcher.group(4));
                 var dx = Integer.signum(x2 - x1);
                 var dy = Integer.signum(y2 - y1);
-                var isDiagonal = x1 != x2 && y1 != y2;
                 var x = x1;
                 var y = y1;
                 while (x != x2 + dx || y != y2 + dy) {
-                    if (isDiagonal) {
+                    if (x1 != x2 && y1 != y2) {
                         diagonalLines[x][y]++;
                     } else {
                         nonDiagonalLines[x][y]++;
